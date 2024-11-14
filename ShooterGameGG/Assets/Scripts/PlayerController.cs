@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public SO_Guns equippedWeapon;
-    public WeaponObject WeaponObject
+    public WeaponObject WeaponObject;
 
     // Update is called once per frame
     void Update()
