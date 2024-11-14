@@ -1,86 +1,55 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public SO_Guns equippedWeapon;
+    public SOGuns equippedWeapon;
     public WeaponObject WeaponObject;
+    private GameObject CurrentWeaponInstance;
+    public Transform weaponOrigin;
+    public float moveSpeed = 5f;
 
     // Update is called once per frame
     void Update()
     {
+        LookDirection();
+        Move();
+
         if (Input.GetKeyDown("0"))
         {
             equippedWeapon.ActivateWeapon(transform);
         }
     }
 
-
-    public void EquipWeapon(SO_Guns NewWeapon)
+    private void Move()
     {
-        if (NewWeapon is MachineGun)
-        {
-            equippedWeapon = NewWeapon;
-           // WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-            //WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-            //WeaponObject.weaponType = NewWeapon.weaponType;
-        }
-        else if (NewWeapon is Shotgun)
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
+        Vector2 moveDirection = new Vector2(moveX, moveY).normalized;
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+    }
 
+    private void LookDirection()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 direction = (mousePosition - transform.position).normalized;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+    }
+
+    public void EquipWeapon(SOGuns NewWeapon)
+    {
+        equippedWeapon = NewWeapon;
+        if (CurrentWeaponInstance != null)
         {
-            equippedWeapon = NewWeapon;
-            //WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-            //WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-            //WeaponObject.weaponType = NewWeapon.weaponType;
+            Destroy(CurrentWeaponInstance);
         }
-        //else if (NewWeapon is Sniper)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        //}
-        //else if (NewWeapon is Pistol)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-         //   WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        //}
-        //else if (NewWeapon is RocketLauncher)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        }
-        //else if (NewWeapon is GrenadeLauncher)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        //}
-        //else if (NewWeapon is Flamethrower)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        //}
-        //else if (NewWeapon is LaserGun)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.WeaponCollider;
-        //    WeaponObject.weaponType = NewWeapon.weaponType;
-        //}
-        //else if (NewWeapon is RailGun)
-        //{
-        //    equippedWeapon = NewWeapon;
-        //    WeaponObject.WeaponSprite = NewWeapon.WeaponSprite;
-        //    WeaponObject.WeaponCollider = NewWeapon.We
-       // }
+        CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, weaponOrigin.rotation, weaponOrigin);
+        WeaponObject = CurrentWeaponInstance.GetComponent<WeaponObject>();
+
+
     }
 }

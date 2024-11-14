@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public SO_Guns[] weaponProgression;
+    public SOGuns[] weaponProgression;
     private int currentWeaponIndex = 0;
     private int playerScore = 0;
     public int ScoreForUpgrade = 100;
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         if(playerScore >= ScoreForUpgrade)
         {
             UpgradeWeapon();
+            playerScore = 0;
         }
     }
 

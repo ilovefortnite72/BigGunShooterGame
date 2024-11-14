@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Shotgun", menuName = "Guns/Shotgun")]
-public class Shotgun : SO_Guns
+public class Shotgun : SOGuns
 {
     public float BulletSpread = 0.45f;
     public GameObject ShotgunPelletPrefab;
