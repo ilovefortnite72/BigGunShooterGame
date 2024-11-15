@@ -10,7 +10,7 @@ public class MachineGun : SOGuns
 {
     public LayerMask whatIsEnemy;
     public LineRenderer lineRenderer;
-    
+    private float firetime;
 
 
     private void Awake()

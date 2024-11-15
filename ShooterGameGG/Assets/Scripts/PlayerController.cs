@@ -7,49 +7,72 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public SOGuns equippedWeapon;
-    public WeaponObject WeaponObject;
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     public float moveSpeed = 5f;
+    public Rigidbody2D rb;
+    private Vector2 moveInput;
+    public Transform LeftArm;
+    public Transform RightArm;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        
+    }
+
     void Update()
     {
         LookDirection();
         Move();
 
-        if (Input.GetKeyDown("0"))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             equippedWeapon.ActivateWeapon(transform);
         }
+
     }
 
     private void Move()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
-        Vector2 moveDirection = new Vector2(moveX, moveY).normalized;
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
+        moveInput.x = Input.GetAxisRaw("Horizontal");
+        moveInput.y = Input.GetAxisRaw("Vertical");
+
+        moveInput.Normalize();
+
+        rb.velocity = moveInput * moveSpeed;
+
     }
 
     private void LookDirection()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = (mousePosition - transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
+        Vector2 direction = (mousePosition - transform.position).normalized;
+        transform.up = direction;
+        Debug.Log(mousePosition);
+
+        if (weaponOrigin != null)
+        {
+            
+            weaponOrigin.up = direction;
+            LeftArm.up = direction;
+            RightArm.up = direction;
+
+        }
     }
 
     public void EquipWeapon(SOGuns NewWeapon)
     {
-        equippedWeapon = NewWeapon;
-        if (CurrentWeaponInstance != null)
+        if(CurrentWeaponInstance != null)
         {
             Destroy(CurrentWeaponInstance);
         }
-        CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, weaponOrigin.rotation, weaponOrigin);
-        WeaponObject = CurrentWeaponInstance.GetComponent<WeaponObject>();
+        equippedWeapon = NewWeapon;
+        weaponOrigin.localRotation = Quaternion.Euler(Vector3.zero);
 
+        if (NewWeapon.gunPrefab != null)
+        {
+            CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, weaponOrigin.rotation, weaponOrigin);
+        }
 
     }
 }
