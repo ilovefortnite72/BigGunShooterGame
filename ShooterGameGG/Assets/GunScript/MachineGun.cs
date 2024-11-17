@@ -8,7 +8,7 @@ using Random = System.Random;
 [CreateAssetMenu(fileName = "MachineGun", menuName = "Guns/MachineGun")]
 public class MachineGun : SOGuns
 {
-    public LayerMask whatIsEnemy;
+    public LayerMask whatIsEnemy; 
     public LineRenderer lineRenderer;
     private float firetime;
 
@@ -17,7 +17,7 @@ public class MachineGun : SOGuns
     {
         fireRate = 0.1f;
         range = 100f;
-        damage = 1f;
+        damage = 10f;
     }
 
     public override void ActivateWeapon(Transform WeaponOrigin)
@@ -31,7 +31,7 @@ public class MachineGun : SOGuns
 
     IEnumerator Fire(Transform WeaponOrigin)
     {
-        while (Input.GetKey("0"))
+        while (Input.GetKey(KeyCode.Alpha0))
         {
             FireRaycasts(WeaponOrigin);
             yield return new WaitForSeconds(fireRate);
