@@ -20,32 +20,28 @@ public class MachineGun : SOGuns
         damage = 10f;
     }
 
-    public override void ActivateWeapon(Transform WeaponOrigin)
+    public override void Fire(Transform weaponOrigin, Vector2 target)
     {
-        if (canShoot && !isReloading)
+        if (Time.time - firetime > fireRate)
         {
-            WeaponOrigin.GetComponent<MonoBehaviour>().StartCoroutine(Fire(WeaponOrigin));
+            firetime = Time.time;
+            FireRaycasts(weaponOrigin);
         }
     }
 
 
-    IEnumerator Fire(Transform WeaponOrigin)
-    {
-        while (Input.GetKey(KeyCode.Alpha0))
-        {
-            FireRaycasts(WeaponOrigin);
-            yield return new WaitForSeconds(fireRate);
-        }
-    }
 
     private void FireRaycasts(Transform weaponOrigin)
     {
         for (int i = 0; i < 4; i++)
         {
             RaycastHit hit;
+            Debug.DrawRay(weaponOrigin.position, weaponOrigin.forward * range, Color.red, 0.1f);
             if (Physics.Raycast(weaponOrigin.position, weaponOrigin.forward, out hit, range, whatIsEnemy))
             {
                 // Deal damage to the enemy
+                Debug.Log("Hit: " + hit.collider.name);
+
                 var enemy = hit.collider.GetComponent<EnemyController>();
                 if (enemy != null)
                 {

@@ -16,10 +16,52 @@ public abstract class SOGuns : ScriptableObject
     public int currentAmmo;
     public int maxAmmo;
     public float spread;
-    public bool canShoot;
-    public bool isAimed;
     public bool isReloading;
+    public AudioClip reloadSound;
 
-    public abstract void ActivateWeapon(Transform weaponOrigin);
+    public virtual void Initialize()
+    {
+        currentAmmo = maxAmmo;
+        isReloading = false;
+    }
+
+    public virtual void ActivateWeapon(Transform weaponOrigin, Vector2 target)
+    {
+        if (isReloading || currentAmmo <= 0)
+        {
+            Debug.Log("Reloading or out of ammo");
+        }
+
+        Fire(weaponOrigin, target);
+        currentAmmo--;
+
+        if (currentAmmo <= 0)
+        {
+            Reload();
+        }
+
+    }
+
+    public abstract void Fire(Transform weaponOrigin, Vector2 target);
+    
+
+    public virtual void Reload()
+    {
+        Debug.Log("Reloading");
+        isReloading = true;
+        CoroutineHelper.Instance.StartCoroutine(ReloadCoroutine());
+        AudioSource.PlayClipAtPoint(reloadSound, Camera.main.transform.position);
+    }
+
+
+    private IEnumerator ReloadCoroutine()
+    {
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = maxAmmo;
+        isReloading = false;
+        Debug.Log("Reloaded");
+    }
+
+
 }
 

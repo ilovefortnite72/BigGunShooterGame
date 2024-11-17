@@ -21,17 +21,19 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        float distance = Vector2.Distance(transform.position, target.position);
-
-        if (distance < attackRange)
-        {
-            Vector2 direction = (target.position - transform.position).normalized;
-            transform.up = direction * moveSpeed * Time.deltaTime;
-        }
-
-
+        MoveToPlayer();
     }
 
+    private void MoveToPlayer()
+    {
+        if (target != null)
+        {
+            Vector2 moveDirection = (target.position - transform.position).normalized;
+            transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+            transform.up = moveDirection;
+            Debug.Log(moveDirection);
+        }
+    }
 
     public void TakeDamage(float damage)
     {

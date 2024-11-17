@@ -32,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < SpawnLimit; i++)
         {
             Vector2 spawnPosition = GetRandomSpawnPos();
+            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         }
     }
 

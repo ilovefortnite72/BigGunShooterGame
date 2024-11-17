@@ -13,19 +13,18 @@ MonoBehaviour:
   m_Name: MachineGun
   m_EditorClassIdentifier: 
   weaponType: 1
-  gunSprite: {fileID: 21300000, guid: 92887312f59105046a58cd3e151e54d7, type: 3}
+  gunSprite: {fileID: 21300000, guid: 94b5ec503d949fa4fb7a1f0c033abe1e, type: 3}
   gunPrefab: {fileID: 6136045280461158606, guid: c6a3e14da7ecde443bd1241747032f3a, type: 3}
   gunName: MachineGun
-  damage: 1
+  damage: 10
   fireRate: 0.1
   range: 100
   reloadTime: 2
   currentAmmo: 30
   maxAmmo: 30
   spread: 0
-  canShoot: 0
-  isAimed: 0
   isReloading: 0
+  reloadSound: {fileID: 0}
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 8
