@@ -26,6 +26,7 @@ public class MachineGun : SOGuns
         {
             firetime = Time.time;
             FireRaycasts(weaponOrigin);
+            Debug.Log("Fired");
         }
     }
 

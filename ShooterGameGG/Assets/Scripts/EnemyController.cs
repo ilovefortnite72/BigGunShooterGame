@@ -10,7 +10,9 @@ public class EnemyController : MonoBehaviour
     public float currenthealth;
     public float moveSpeed = 5f;
     public Transform target;
-    public float attackRange = 2f;
+    public bool canAttack = true;
+    public float attackRate = 2f;
+    public float PlayerDamage = 10;
 
     void Start()
     {
@@ -22,7 +24,10 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         MoveToPlayer();
+        
     }
+
+    
 
     private void MoveToPlayer()
     {
@@ -31,8 +36,24 @@ public class EnemyController : MonoBehaviour
             Vector2 moveDirection = (target.position - transform.position).normalized;
             transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
             transform.up = moveDirection;
-            Debug.Log(moveDirection);
+            
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && canAttack)
+        {
+            collision.GetComponent<PlayerController>().TakeDamage(PlayerDamage);
+            canAttack = false;
+            StartCoroutine(ResetAttack());
+        }
+    }
+
+    private IEnumerator ResetAttack()
+    {
+        yield return new WaitForSeconds(attackRate);
+        canAttack = true;
     }
 
     public void TakeDamage(float damage)

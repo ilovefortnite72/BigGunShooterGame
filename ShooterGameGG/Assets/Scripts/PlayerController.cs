@@ -9,20 +9,35 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Weapon Stuff")]
     public SOGuns equippedWeapon;
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     private Vector2 target;
+
+    [Header("Movement Stuff")]
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
     private Vector2 moveInput;
     public Transform LeftArm;
     public Transform RightArm;
+
+    [Header("UI Stuff")]
     public TextMeshProUGUI currentammoText;
     public TextMeshProUGUI maxammoText;
+    public Slider HealthSlider;
+
+
+    [Header("Healh Stuff")]
+    public float maxhealth = 100f;
+    private float currenthealth;
+    private bool isInvulnerable = false;
+    public float invulnerabilityDuration = 2f;
+    private float damage;
 
     private void Start()
     {
+        currenthealth = maxhealth;
         UpdateAmmoUI();
     }
 
@@ -32,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         LookDirection();
         Move();
+        UpdateAmmoUI();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -105,5 +121,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+
+    public void TakeDamage(float damage)
+    {
+        if(isInvulnerable)
+        {
+            return;
+        }
+        currenthealth -= damage;
+        Debug.Log($"Player took {damage} damage. Current health: {currenthealth}");
+        HealthSlider.value = currenthealth;
+
+        if (currenthealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(Invulnerability());
+        }
+
+    }
+
+    private IEnumerator Invulnerability()
+    {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
+    }
+    private void Die()
+    {
+        throw new NotImplementedException();
+    }
+
+   
 }
