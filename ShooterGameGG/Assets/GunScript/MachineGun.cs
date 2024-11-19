@@ -18,19 +18,16 @@ public class MachineGun : SOGuns
         fireRate = 0.1f;
         range = 100f;
         damage = 10f;
+        
     }
 
     public override void Fire(Transform weaponOrigin, Vector2 target)
     {
-        if (Time.time - firetime > fireRate)
-        {
-            firetime = Time.time;
-            FireRaycasts(weaponOrigin);
-            Debug.Log("Fired");
-        }
+        firetime = Time.time;
+        FireRaycasts(weaponOrigin);
+        Debug.Log("Fired");
+        
     }
-
-
 
     private void FireRaycasts(Transform weaponOrigin)
     {
@@ -54,8 +51,6 @@ public class MachineGun : SOGuns
             }
         }
     }
-
-
 
     IEnumerator ShowBulletEffect(Vector3 start, Vector3 end)
     {

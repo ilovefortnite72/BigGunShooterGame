@@ -18,11 +18,13 @@ public abstract class SOGuns : ScriptableObject
     public float spread;
     public bool isReloading;
     public AudioClip reloadSound;
+    public AudioClip shootSound;
 
     public virtual void Initialize()
     {
         currentAmmo = maxAmmo;
         isReloading = false;
+        
     }
 
     public virtual void ActivateWeapon(Transform weaponOrigin, Vector2 target)

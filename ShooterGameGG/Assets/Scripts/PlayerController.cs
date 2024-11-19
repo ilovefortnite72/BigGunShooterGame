@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     private Vector2 target;
+    
 
     [Header("Movement Stuff")]
     public float moveSpeed = 5f;
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            equippedWeapon.ActivateWeapon(weaponOrigin, target);
+            equippedWeapon.Fire(weaponOrigin, target);
             UpdateAmmoUI();
         }
 
@@ -98,11 +99,11 @@ public class PlayerController : MonoBehaviour
             Destroy(CurrentWeaponInstance);
         }
         equippedWeapon = NewWeapon;
-        weaponOrigin.localRotation = Quaternion.Euler(Vector3.zero);
+        weaponOrigin.localRotation = Quaternion.identity;
 
         if (NewWeapon.gunPrefab != null)
         {
-            CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, weaponOrigin.rotation, weaponOrigin);
+            CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
         }
 
     }
