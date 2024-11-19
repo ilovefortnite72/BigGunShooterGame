@@ -6,6 +6,12 @@ public class MiniMapScript : MonoBehaviour
 {
     public Transform player;
 
+    private void Start()
+    {
+        
+        
+    }
+
     void LateUpdate()
     {
         Vector3 newposition = player.position;

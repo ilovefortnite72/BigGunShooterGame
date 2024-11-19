@@ -19,6 +19,7 @@ public abstract class SOGuns : ScriptableObject
     public bool isReloading;
     public AudioClip reloadSound;
     public AudioClip shootSound;
+    public AudioClip emptyMagClip;
 
     public virtual void Initialize()
     {
@@ -32,6 +33,11 @@ public abstract class SOGuns : ScriptableObject
         if (isReloading || currentAmmo <= 0)
         {
             Debug.Log("Reloading or out of ammo");
+            if (emptyMagClip != null)
+            {
+                AudioSource.PlayClipAtPoint(emptyMagClip, Camera.main.transform.position);
+            }
+            return;
         }
 
         Fire(weaponOrigin, target);

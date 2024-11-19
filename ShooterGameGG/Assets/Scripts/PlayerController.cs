@@ -50,16 +50,23 @@ public class PlayerController : MonoBehaviour
         Move();
         UpdateAmmoUI();
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetMouseButtonDown(0))
         {
-            equippedWeapon.Fire(weaponOrigin, target);
-            UpdateAmmoUI();
+            if(equippedWeapon != null)
+            {
+                Debug.Log("Firing");
+                equippedWeapon.ActivateWeapon(weaponOrigin, target);
+                UpdateAmmoUI();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            equippedWeapon.Reload();
-            UpdateAmmoUI();
+            if(equippedWeapon != null)
+            {
+                equippedWeapon.Reload();
+                UpdateAmmoUI();
+            }
         }
 
     }
@@ -104,6 +111,7 @@ public class PlayerController : MonoBehaviour
         if (NewWeapon.gunPrefab != null)
         {
             CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
+            UpdateAmmoUI();
         }
 
     }
