@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     private Vector2 target;
-    
+    public LineRenderer lineRenderer;
+
 
     [Header("Movement Stuff")]
     public float moveSpeed = 5f;
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Firing");
                 equippedWeapon.ActivateWeapon(weaponOrigin, target);
                 UpdateAmmoUI();
+                Debug.Log("ui updated");
             }
         }
 
@@ -84,10 +86,14 @@ public class PlayerController : MonoBehaviour
 
     private void LookDirection()
     {
-        Vector3 target = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));
-        Vector2 direction = (target - transform.position).normalized;
-        transform.up = direction;
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Camera.main.nearClipPlane; // Ensure the z position is set correctly
+        target = Camera.main.ScreenToWorldPoint(mousePosition);
         
+
+        Vector2 direction = (target - (Vector2)transform.position).normalized;
+        
+        transform.up = direction;
 
         if (weaponOrigin != null)
         {
@@ -163,5 +169,10 @@ public class PlayerController : MonoBehaviour
         throw new NotImplementedException();
     }
 
-   
+    public LineRenderer GetLineRenderer()
+    {
+        return lineRenderer;
+    }
+
+
 }

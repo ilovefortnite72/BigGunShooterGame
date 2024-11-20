@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5730b4386770d48bf600b301c1b77b, type: 3}
+  m_Name: RocketLauncher
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  gunSprite: {fileID: 21300000, guid: 86c506b9116c23246a74ec5edf9deb91, type: 3}
+  gunPrefab: {fileID: 6531499380894903416, guid: f18bb9751d0ab4543ac032348140af29, type: 3}
+  gunName: RPG
+  damage: 80
+  fireRate: 6
+  range: 100000
+  reloadTime: 4
+  currentAmmo: 1
+  maxAmmo: 1
+  spread: 0
+  isReloading: 0
+  reloadSound: {fileID: 0}
+  shootSound: {fileID: 0}
+  emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}
+  rocketPrefab: {fileID: 3604114860469102341, guid: 541e7559a181e924bb6a28b854990c69, type: 3}
+  rocketSpeed: 20
+  explosionRadius: 10
+  explosionDamage: 80
+  explosionSound: {fileID: 0}

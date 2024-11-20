@@ -40,10 +40,12 @@ public abstract class SOGuns : ScriptableObject
             return;
         }
 
+
         Fire(weaponOrigin, target);
+
         currentAmmo--;
 
-        if (currentAmmo <= 0)
+        if (currentAmmo <= 0) 
         {
             Reload();
         }
@@ -51,7 +53,30 @@ public abstract class SOGuns : ScriptableObject
     }
 
     public abstract void Fire(Transform weaponOrigin, Vector2 target);
-    
+
+
+    protected void FireRaycasts(Transform weaponOrigin, Vector2 target, LayerMask whatIsEnemy, float range, float damage)
+    {
+        
+
+        RaycastHit2D hit;
+        Vector2 direction = (target - (Vector2)weaponOrigin.position).normalized;
+        hit = Physics2D.Raycast(weaponOrigin.position, direction, range, whatIsEnemy);
+
+        Debug.DrawRay(weaponOrigin.position, direction * range, Color.green, 0.5f);
+        if (hit.collider != null)
+        {
+            // Deal damage to the enemy
+            Debug.Log("Hit: " + hit.collider.name);
+            var enemy = hit.collider.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+
+        }
+    }
+
 
     public virtual void Reload()
     {

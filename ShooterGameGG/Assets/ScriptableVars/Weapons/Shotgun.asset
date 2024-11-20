@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fb7684638f416a4abe63dda56a5c317, type: 3}
+  m_Name: Shotgun
+  m_EditorClassIdentifier: 
+  weaponType: 0
+  gunSprite: {fileID: 21300000, guid: 27db187bda0ce5a43b29086681917f1e, type: 3}
+  gunPrefab: {fileID: 2834102165960845535, guid: 17a96ac6db910fe4897a8c504e950761, type: 3}
+  gunName: Shotgun
+  damage: 50
+  fireRate: 2
+  range: 30
+  reloadTime: 4
+  currentAmmo: 6
+  maxAmmo: 6
+  spread: 0.45
+  isReloading: 0
+  reloadSound: {fileID: 0}
+  shootSound: {fileID: 0}
+  emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}
+  BulletSpread: 0.45
+  bulletForce: 100
+  ShotgunPelletPrefab: {fileID: 2118768353264750261, guid: ce0b3dbec338808449ab6cee497ce373, type: 3}

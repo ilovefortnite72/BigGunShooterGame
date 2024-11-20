@@ -6,16 +6,14 @@ public class MiniMapScript : MonoBehaviour
 {
     public Transform player;
 
-    private void Start()
-    {
-        
-        
-    }
+    
 
     void LateUpdate()
     {
-        Vector3 newposition = player.position;
-        newposition.y = transform.position.y;
-        transform.position = newposition;
+        //camera follows player position
+        Vector3 newPosition = player.position;
+        newPosition.z = transform.position.z;
+        transform.position = newPosition;
+
     }
 }

@@ -2,17 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketLauncher : MonoBehaviour
+[CreateAssetMenu(fileName = "RocketLauncher", menuName = "Guns/RocketLauncher")]
+public class RocketLauncher : SOGuns
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject rocketPrefab;
+    public float rocketSpeed;
+    public float explosionRadius;
+    public float explosionDamage;
+    public AudioClip explosionSound;
 
-    // Update is called once per frame
-    void Update()
+
+    public override void Fire(Transform weaponOrigin, Vector2 target)
     {
-        
+        GameObject rocket = Instantiate(rocketPrefab, weaponOrigin.position, weaponOrigin.rotation);
+        Rigidbody2D rb = rocket.GetComponent<Rigidbody2D>();
+
+        if(rb != null)
+        {
+            rb.velocity = weaponOrigin.up * rocketSpeed;
+        }
+
+
+        Rocket rocketScript = rocket.GetComponent<Rocket>();
+
+        if(rocketScript != null)
+        {
+            rocketScript.Initialize(explosionRadius, explosionDamage, explosionSound);
+        }
+
     }
 }

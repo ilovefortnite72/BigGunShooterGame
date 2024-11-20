@@ -4,37 +4,31 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
-    public float speed = 20f;
-    private Rigidbody2D rb;
-    private float damage;
+    public float Bspeed;
+    private Vector2 direction;
+
 
     //add force once instantiated
-    private void Start()
+    public void Initialize(float speed, float bulletSpeed, Vector2 direction)
     {
-        rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = transform.right * speed;
-        }
+        this.Bspeed = speed;
+        this.direction = direction;
+        
     }
 
-    //get damage from the gun script and set it to the bullet
-    public void SetDamage(float damage)
+    private void Update()
     {
-        this.damage = damage;
+        transform.Translate(direction * Bspeed * Time.deltaTime);
     }
+
 
 
     //if the bullet hits an enemy, deal damage to it and destroy the bullet
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
-        if (enemyController != null)
-        {
-            enemyController.TakeDamage(damage);
-        }
         Destroy(gameObject);
+
     }
 }
 

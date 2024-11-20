@@ -12,58 +12,36 @@ public class MachineGun : SOGuns
     public LayerMask whatIsEnemy; 
     public LineRenderer lineRenderer;
     private float firetime;
-
-
-    private void Start()
-    {
-        fireRate = 0.1f;
-        range = 100f;
-        damage = 10f;
-    }
+    public GameObject bulletPrefab;
+    public float bulletSpeed;
 
 
     public override void Fire(Transform weaponOrigin, Vector2 target)
     {
         
         firetime = Time.time;
-        FireRaycasts(weaponOrigin);
+
+        Vector2 direction = (target - (Vector2)weaponOrigin.position).normalized;
+
+
+        FireRaycasts(weaponOrigin, target, whatIsEnemy, range, damage);
+
+        GameObject bullet = Instantiate(bulletPrefab, weaponOrigin.position, Quaternion.identity);
+        BulletBehaviour bulletBeh = bullet.GetComponent<BulletBehaviour>();
+
+        
+
+        if (bulletBeh != null)
+        {
+            bulletBeh.Initialize(damage, bulletSpeed, direction);
+        }
+
+        
+
         Debug.Log("Fired");
         
     }
 
-    private void FireRaycasts(Transform weaponOrigin)
-    {
-        RaycastHit hit;
-
-        Debug.DrawRay(weaponOrigin.position, weaponOrigin.forward * range, Color.red, 0.1f);
-
-        if (Physics.Raycast(weaponOrigin.position, weaponOrigin.forward, out hit, range, whatIsEnemy))
-        {
-            // Deal damage to the enemy
-            Debug.Log("Hit: " + hit.collider.name);
-
-            var enemy = hit.collider.GetComponent<EnemyController>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(damage);
-            }
-
-            // Create visual effect
-            CoroutineHelper.Instance.StartCoroutine(ShowBulletEffect(weaponOrigin.position, hit.point));
-        }
-    }
 
     
-    IEnumerator ShowBulletEffect(Vector3 start, Vector3 end)
-    {
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
-        lineRenderer.startColor = Color.yellow;
-        lineRenderer.endColor = Color.yellow;
-        lineRenderer.enabled = true;
-
-        yield return new WaitForSeconds(0.05f);
-
-        lineRenderer.enabled = false;
-    }
 }
