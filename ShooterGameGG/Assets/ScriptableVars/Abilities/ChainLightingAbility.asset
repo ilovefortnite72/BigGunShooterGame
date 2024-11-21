@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChainLightingAbility
   m_EditorClassIdentifier: 
   abilityName: ChainLightning
-  abilitySprite: {fileID: 0}
+  abilitySprite: {fileID: 21300000, guid: 7d169cb97e58eb747983b2ce68bc6317, type: 3}
   cooldown: 9
   range: 15
   damage: 40
@@ -27,5 +27,5 @@ MonoBehaviour:
   remainingChains: 3
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 0
-  chainLightingEffect: {fileID: 0}
+    m_Bits: 8
+  chainLightingEffect: {fileID: 5041724182702774427, guid: 88bc1d14cfe686741bb79fc8a91ae319, type: 3}

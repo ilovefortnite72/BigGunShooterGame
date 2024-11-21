@@ -39,10 +39,10 @@ public class ChainLighting : SOAbilities
             }
 
             
-            //if (lightningEffect != null)
-            //{
-            //    Instantiate(lightningEffect, nearestEnemy.transform.position, Quaternion.identity);
-            //}
+            if (chainLightingEffect!= null)
+            {
+                Instantiate(chainLightingEffect, nearestEnemy.transform.position, Quaternion.identity);
+            }
 
             
             currentPosition = nearestEnemy.transform.position;

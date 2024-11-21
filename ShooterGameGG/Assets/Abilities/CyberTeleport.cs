@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
-
-public class CyberTeleport : MonoBehaviour
+[CreateAssetMenu(fileName = "BlinkAbility", menuName = "Abilities/BlinkAbility")]
+public class CyberTeleport : SOAbilities
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void ActivateAbility(Transform player)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        throw new System.NotImplementedException();
     }
 }

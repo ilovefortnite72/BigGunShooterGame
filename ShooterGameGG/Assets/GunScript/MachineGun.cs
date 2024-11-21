@@ -38,7 +38,7 @@ public class MachineGun : SOGuns
 
         
 
-        Debug.Log("Fired");
+        
         
     }
 

@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI currentammoText;
     public TextMeshProUGUI maxammoText;
     public Slider HealthSlider;
+    public UIController UIC;
 
 
     [Header("Healh Stuff")]
@@ -55,10 +56,10 @@ public class PlayerController : MonoBehaviour
         {
             if(equippedWeapon != null)
             {
-                Debug.Log("Firing");
+                
                 equippedWeapon.ActivateWeapon(weaponOrigin, target);
                 UpdateAmmoUI();
-                Debug.Log("ui updated");
+                
             }
         }
 
@@ -144,7 +145,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         currenthealth -= damage;
-        Debug.Log($"Player took {damage} damage. Current health: {currenthealth}");
+        
         HealthSlider.value = currenthealth;
 
         if (currenthealth <= 0)

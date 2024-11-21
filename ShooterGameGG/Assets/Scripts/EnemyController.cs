@@ -14,6 +14,8 @@ public class EnemyController : MonoBehaviour
     public float attackRate = 2f;
     public float PlayerDamage = 10;
 
+    public Animator eAnim;
+
     void Start()
     {
         currenthealth = maxhealth;
@@ -70,6 +72,7 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        eAnim.SetBool("isDead", true);     
+        //Destroy(gameObject);
     }
 }
