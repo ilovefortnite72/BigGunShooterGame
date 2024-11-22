@@ -8,6 +8,7 @@ public abstract class SOGuns : ScriptableObject
     public WeaponType weaponType;
     public Sprite gunSprite;
     public GameObject gunPrefab;
+    public LayerMask whatIsEnemy;
     public string gunName;
     public float damage;
     public float fireRate;
@@ -17,15 +18,19 @@ public abstract class SOGuns : ScriptableObject
     public int maxAmmo;
     public float spread;
     public bool isReloading;
+    private float nextTimeToFire;
+    public bool canHoldTrigger;
     public AudioClip reloadSound;
     public AudioClip shootSound;
     public AudioClip emptyMagClip;
+
+    
 
     public virtual void Initialize()
     {
         currentAmmo = maxAmmo;
         isReloading = false;
-        
+        nextTimeToFire = 0f;
     }
 
     public virtual void ActivateWeapon(Transform weaponOrigin, Vector2 target)
@@ -40,16 +45,32 @@ public abstract class SOGuns : ScriptableObject
             return;
         }
 
-
-        Fire(weaponOrigin, target);
-
-        currentAmmo--;
-
-        if (currentAmmo <= 0) 
+        if (Time.time >= nextTimeToFire)
         {
-            Reload();
-        }
+            Fire(weaponOrigin, target);
 
+            currentAmmo--;
+            nextTimeToFire = Time.time / fireRate;
+
+            if (currentAmmo <= 0)
+            {
+                Reload();
+            }
+        }
+    }
+
+    public virtual void HoldFire(Transform weaponOrigin, Vector2 target)
+    {
+
+        if (canHoldTrigger)
+        {
+            ActivateWeapon(weaponOrigin, target);
+        }
+    }
+
+    public virtual void StopFire(Transform weaponOrigin)
+    {
+        
     }
 
     public abstract void Fire(Transform weaponOrigin, Vector2 target);

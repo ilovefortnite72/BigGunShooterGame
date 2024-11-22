@@ -55,12 +55,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if(equippedWeapon != null)
-            {
-                
-                equippedWeapon.ActivateWeapon(weaponOrigin, target);
-                UpdateAmmoUI();
-                
+            { //check is current weapon equipped can hold trigger, if so call logic to hold trigger
+                if (equippedWeapon.canHoldTrigger)
+                {
+                    equippedWeapon.HoldFire(weaponOrigin, target);
+                    UpdateAmmoUI();
+                } // if not just tap fire
+                else if (Input.GetMouseButtonDown(0))
+                {
+                    equippedWeapon.ActivateWeapon(weaponOrigin, target);
+                    UpdateAmmoUI();
+                }
             }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            equippedWeapon.StopFire(weaponOrigin);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -106,7 +116,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void EquipWeapon(SOGuns NewWeapon)
+    public void EquipWeapon(SOGuns NewWeapon)  //refresh weapon upon picking up new weapon
     {
         if(CurrentWeaponInstance != null)
         {
@@ -115,14 +125,14 @@ public class PlayerController : MonoBehaviour
         equippedWeapon = NewWeapon;
         weaponOrigin.localRotation = Quaternion.identity;
 
-        if (NewWeapon.gunPrefab != null)
+        if (NewWeapon.gunPrefab != null) //instantiate new weapon based on weaponmanager logic, passed from #GameManager
         {
             CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
             UpdateAmmoUI();
         }
 
     }
-
+            //update ammo ui
     private void UpdateAmmoUI()
     {
         if(equippedWeapon != null)
@@ -137,7 +147,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    //logic to take damage from enemies when too close. referenable from enemycontroller script
     public void TakeDamage(float damage)
     {
         if(isInvulnerable)
@@ -158,7 +168,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
+    //invulnerability to damage after taking damage so you dont instantly die
     private IEnumerator Invulnerability()
     {
         isInvulnerable = true;

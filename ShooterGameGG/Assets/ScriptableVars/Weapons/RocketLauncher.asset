@@ -15,6 +15,9 @@ MonoBehaviour:
   weaponType: 2
   gunSprite: {fileID: 21300000, guid: 86c506b9116c23246a74ec5edf9deb91, type: 3}
   gunPrefab: {fileID: 6531499380894903416, guid: f18bb9751d0ab4543ac032348140af29, type: 3}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 8
   gunName: RPG
   damage: 80
   fireRate: 6
@@ -24,6 +27,7 @@ MonoBehaviour:
   maxAmmo: 1
   spread: 0
   isReloading: 0
+  canHoldTrigger: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}

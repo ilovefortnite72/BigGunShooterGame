@@ -15,6 +15,9 @@ MonoBehaviour:
   weaponType: 0
   gunSprite: {fileID: 21300000, guid: 27db187bda0ce5a43b29086681917f1e, type: 3}
   gunPrefab: {fileID: 2834102165960845535, guid: 17a96ac6db910fe4897a8c504e950761, type: 3}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 24
   gunName: Shotgun
   damage: 50
   fireRate: 2
@@ -24,6 +27,7 @@ MonoBehaviour:
   maxAmmo: 6
   spread: 0.45
   isReloading: 0
+  canHoldTrigger: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}

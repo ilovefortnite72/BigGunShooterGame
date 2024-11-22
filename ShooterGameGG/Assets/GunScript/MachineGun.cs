@@ -9,7 +9,6 @@ using Random = System.Random;
 [CreateAssetMenu(fileName = "MachineGun", menuName = "Guns/MachineGun")]
 public class MachineGun : SOGuns
 {
-    public LayerMask whatIsEnemy; 
     public LineRenderer lineRenderer;
     private float firetime;
     public GameObject bulletPrefab;
