@@ -18,7 +18,7 @@ public abstract class SOGuns : ScriptableObject
     public int maxAmmo;
     public float spread;
     public bool isReloading;
-    private float nextTimeToFire;
+    public float nextTimeToFire;
     public bool canHoldTrigger;
     public AudioClip reloadSound;
     public AudioClip shootSound;
@@ -48,9 +48,10 @@ public abstract class SOGuns : ScriptableObject
         if (Time.time >= nextTimeToFire)
         {
             Fire(weaponOrigin, target);
+            Debug.Log("Firing");
 
             currentAmmo--;
-            nextTimeToFire = Time.time / fireRate;
+            nextTimeToFire = Time.time + (1f / fireRate);
 
             if (currentAmmo <= 0)
             {
@@ -73,7 +74,14 @@ public abstract class SOGuns : ScriptableObject
         
     }
 
-    public abstract void Fire(Transform weaponOrigin, Vector2 target);
+    public virtual void Fire(Transform weaponOrigin, Vector2 target)
+    {
+        FireRaycasts(weaponOrigin, target, whatIsEnemy, range, damage);
+        if (shootSound != null)
+        {
+            AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
+        }
+    }
 
 
     protected void FireRaycasts(Transform weaponOrigin, Vector2 target, LayerMask whatIsEnemy, float range, float damage)

@@ -15,21 +15,23 @@ MonoBehaviour:
   weaponType: 1
   gunSprite: {fileID: 21300000, guid: 94b5ec503d949fa4fb7a1f0c033abe1e, type: 3}
   gunPrefab: {fileID: 6136045280461158606, guid: c6a3e14da7ecde443bd1241747032f3a, type: 3}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 8
   gunName: MachineGun
   damage: 10
   fireRate: 0.1
   range: 100
   reloadTime: 2
-  currentAmmo: 30
+  currentAmmo: 28
   maxAmmo: 30
   spread: 0
   isReloading: 0
+  nextTimeToFire: 174.52538
+  canHoldTrigger: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}
-  whatIsEnemy:
-    serializedVersion: 2
-    m_Bits: 8
   lineRenderer: {fileID: 0}
   bulletPrefab: {fileID: 2118768353264750261, guid: ce0b3dbec338808449ab6cee497ce373, type: 3}
   bulletSpeed: 1000

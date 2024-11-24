@@ -35,12 +35,9 @@ public class MachineGun : SOGuns
             bulletBeh.Initialize(damage, bulletSpeed, direction);
         }
 
-        
-
-        
-        
+        if(shootSound != null)
+        {
+            AudioSource.PlayClipAtPoint(shootSound, weaponOrigin.position);
+        }
     }
-
-
-    
 }

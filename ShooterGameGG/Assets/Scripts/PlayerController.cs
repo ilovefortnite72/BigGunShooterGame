@@ -52,30 +52,31 @@ public class PlayerController : MonoBehaviour
         Move();
         UpdateAmmoUI();
 
-        if (Input.GetMouseButtonDown(0))
+        if (equippedWeapon != null)
         {
-            if(equippedWeapon != null)
-            { //check is current weapon equipped can hold trigger, if so call logic to hold trigger
-                if (equippedWeapon.canHoldTrigger)
+            if (equippedWeapon.canHoldTrigger)
+            {
+                if (Input.GetMouseButton(0)) // Use GetMouseButton to continuously fire while the button is held
                 {
                     equippedWeapon.HoldFire(weaponOrigin, target);
                     UpdateAmmoUI();
-                } // if not just tap fire
-                else if (Input.GetMouseButtonDown(0))
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0)) // Use GetMouseButtonDown for single fire
                 {
                     equippedWeapon.ActivateWeapon(weaponOrigin, target);
                     UpdateAmmoUI();
                 }
             }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            equippedWeapon.StopFire(weaponOrigin);
-        }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if(equippedWeapon != null)
+            if (Input.GetMouseButtonUp(0))
+            {
+                equippedWeapon.StopFire(weaponOrigin);
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 equippedWeapon.Reload();
                 UpdateAmmoUI();

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e560140b6e4c17e42ad1d33ac426b0f9, type: 3}
+  m_Name: MiniGun
+  m_EditorClassIdentifier: 
+  weaponType: 0
+  gunSprite: {fileID: 0}
+  gunPrefab: {fileID: 0}
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 8
+  gunName: MIniGun
+  damage: 5
+  fireRate: 30
+  range: 80
+  reloadTime: 6
+  currentAmmo: 200
+  maxAmmo: 200
+  spread: 0.6
+  isReloading: 0
+  nextTimeToFire: 0
+  canHoldTrigger: 0
+  reloadSound: {fileID: 0}
+  shootSound: {fileID: 0}
+  emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}
+  overHeatThreshold: 100
+  overHeatIncrease: 5
+  overHeatCooldown: 2
+  overHeatedTime: 2
