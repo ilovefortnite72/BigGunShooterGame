@@ -20,15 +20,16 @@ MonoBehaviour:
     m_Bits: 8
   gunName: MachineGun
   damage: 10
-  fireRate: 0.1
+  fireRate: 100
   range: 100
   reloadTime: 2
-  currentAmmo: 28
+  currentAmmo: 24
   maxAmmo: 30
   spread: 0
   isReloading: 0
-  nextTimeToFire: 174.52538
+  nextTimeToFire: 22.771502
   canHoldTrigger: 0
+  usesFuel: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}

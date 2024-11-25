@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.AI;
 
 public class ObjectPoolManager : MonoBehaviour
 {
@@ -76,7 +77,19 @@ public class ObjectPoolManager : MonoBehaviour
             pool.InactiveObjects.Remove(spawnableObj);
         }
 
+        resetNavMeshAgent(spawnableObj);
+
         return spawnableObj;
+    }
+
+    private static void resetNavMeshAgent(GameObject obj)
+    {
+        NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.enabled = false;
+            agent.enabled = true;
+        }
     }
 
 
@@ -111,7 +124,7 @@ public class ObjectPoolManager : MonoBehaviour
                 return GameObject.Find("Pooled VFX");
             default:
                 return null;
-        }
+        } 
     }
 
 }

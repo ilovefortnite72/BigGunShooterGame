@@ -29,9 +29,10 @@ MonoBehaviour:
   isReloading: 0
   nextTimeToFire: 0.1
   canHoldTrigger: 0
+  usesFuel: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 0}
-  razorBladePrefab: {fileID: 0}
+  razorBladePrefab: {fileID: 8169643732374291278, guid: 47f88c966fed15d439e03dfff5139fd4, type: 3}
   maxBounces: 5
   bladeSpeed: 20

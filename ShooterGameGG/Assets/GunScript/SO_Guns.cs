@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,11 @@ public abstract class SOGuns : ScriptableObject
         
         
     }
+    public void Awake()
+    {
+        Initialize();
+    }
+    
 
     public virtual void ActivateWeapon(Transform weaponOrigin, Vector2 target)
     {
@@ -50,7 +56,7 @@ public abstract class SOGuns : ScriptableObject
             return;
         }
 
-        if (Time.time >= nextTimeToFire)
+        if (fireRate <= nextTimeToFire)
         {
             Fire(weaponOrigin, target);
             Debug.Log("Firing");
@@ -65,7 +71,7 @@ public abstract class SOGuns : ScriptableObject
                     Reload();
                 }
             }
-            nextTimeToFire = Time.time + (1f / fireRate);
+            nextTimeToFire = Time.time - (1f / fireRate);
         }
                 
     }

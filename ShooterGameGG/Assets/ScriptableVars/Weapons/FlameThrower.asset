@@ -27,7 +27,9 @@ MonoBehaviour:
   maxAmmo: 100
   spread: 0
   isReloading: 0
-  canHoldTrigger: 0
+  nextTimeToFire: 0
+  canHoldTrigger: 1
+  usesFuel: 1
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 0}

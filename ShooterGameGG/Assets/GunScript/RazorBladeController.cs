@@ -33,7 +33,7 @@ public class RazorBladeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb == null)
+        if (rb != null)
         {
             rb.velocity = direction * speed;
         }

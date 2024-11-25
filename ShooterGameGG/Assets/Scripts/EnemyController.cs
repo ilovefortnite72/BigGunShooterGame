@@ -32,8 +32,11 @@ public class EnemyController : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         currentSpeed = baseSpeed;
 
-        NavMeshAgent agent = GetComponent<NavMeshAgent>();
-        if(agent == null)
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
+        if (agent == null)
         {
             Debug.LogError("NavMeshAgent component not found");
         }
@@ -47,14 +50,23 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         MoveToPlayer();
+        LookatPlayer();
         
+
     }
 
-    
+    private void LookatPlayer()
+    {
+        Vector3 PlayerPosition = target.position;
+        Vector2 direction = (PlayerPosition - transform.position).normalized;
+        transform.up = direction;
+
+    }
 
     private void MoveToPlayer()
     {
-        if(target != null && agent != null)
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        if (target != null && agent != null)
         {
             agent.SetDestination(target.position);
         }
