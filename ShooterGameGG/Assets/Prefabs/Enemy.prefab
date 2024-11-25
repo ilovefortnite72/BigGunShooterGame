@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 666046823096312630}
   - component: {fileID: 4146895143009315603}
   - component: {fileID: 5602909518319970335}
+  - component: {fileID: 143336677511189836}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -104,11 +105,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxhealth: 100
   currenthealth: 0
-  moveSpeed: 5
+  baseSpeed: 5
   target: {fileID: 0}
   canAttack: 1
   attackRate: 2
   PlayerDamage: 10
+  isDead: 0
+  eAnim: {fileID: 0}
 --- !u!60 &1081435493437719179
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -253,6 +256,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!195 &143336677511189836
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5287672165953045993}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.8828125
+  m_BaseOffset: 0.44140625
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &5653043142667830703
 GameObject:
   m_ObjectHideFlags: 0

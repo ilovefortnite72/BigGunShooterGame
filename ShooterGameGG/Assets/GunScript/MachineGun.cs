@@ -25,7 +25,7 @@ public class MachineGun : SOGuns
 
         FireRaycasts(weaponOrigin, target, whatIsEnemy, range, damage);
 
-        GameObject bullet = Instantiate(bulletPrefab, weaponOrigin.position, Quaternion.identity);
+        GameObject bullet = ObjectPoolManager.SpawnObject(bulletPrefab, weaponOrigin.position, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
         BulletBehaviour bulletBeh = bullet.GetComponent<BulletBehaviour>();
 
         

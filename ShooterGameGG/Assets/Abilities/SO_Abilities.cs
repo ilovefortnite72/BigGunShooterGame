@@ -17,18 +17,17 @@ public abstract class SOAbilities : ScriptableObject
     public float damageOverTime;
     public float slowAmount;
     public float stunDuration;
+    private float lastActivatedTime;
 
-    public bool AbilityAvailable()
-    {
-        return Time.time >= cooldown;
-    }
 
-    public void Use(Transform player)
+    public bool IsOnCooldown => Time.time < lastActivatedTime + cooldown;
+
+    public void ActivateAbility(Transform player)
     {
-        if (AbilityAvailable())
+        if (!IsOnCooldown)
         {
-            ActivateAbility(player);
-            cooldown = Time.time + cooldown;
+            UseAbility(player);
+            StartCooldown();
         }
         else
         {
@@ -36,10 +35,13 @@ public abstract class SOAbilities : ScriptableObject
         }
     }
     
-    protected abstract void ActivateAbility(Transform player);
+    protected abstract void UseAbility(Transform player);
 
 
-
+    protected void StartCooldown()
+    {
+        lastActivatedTime = Time.time;
+    }
 
 }
 

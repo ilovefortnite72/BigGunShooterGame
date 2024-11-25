@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,12 +24,23 @@ public class EnemyController : MonoBehaviour
     public Animator eAnim;
 
     private Coroutine resetSlowCoroutine;
+    private NavMeshAgent agent;
 
     void Start()
     {
         currenthealth = maxhealth;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         currentSpeed = baseSpeed;
+
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        if(agent == null)
+        {
+            Debug.LogError("NavMeshAgent component not found");
+        }
+        else
+        {
+            agent.speed = currentSpeed;
+        }
     }
 
 
@@ -41,12 +54,9 @@ public class EnemyController : MonoBehaviour
 
     private void MoveToPlayer()
     {
-        if (target != null)
+        if(target != null && agent != null)
         {
-            Vector2 moveDirection = (target.position - transform.position).normalized;
-            transform.position = Vector2.MoveTowards(transform.position, target.position, currentSpeed * Time.deltaTime);
-            transform.up = moveDirection;
-            
+            agent.SetDestination(target.position);
         }
     }
 
@@ -104,6 +114,6 @@ public class EnemyController : MonoBehaviour
     {
         eAnim.SetBool("isDead", true);
         isDead = true;
-        //Destroy(gameObject);
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

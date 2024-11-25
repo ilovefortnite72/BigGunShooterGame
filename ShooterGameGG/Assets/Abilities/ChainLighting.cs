@@ -6,53 +6,55 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ChainLightingAbility", menuName = "Abilities/ChainLighting")]
 public class ChainLighting : SOAbilities
 {
-    public int remainingChains;
+    [Header("Chain Lightning Properties")]
+    public int maxChains = 5;
+    public float damageReductionPerChain = 0.15f;
     public LayerMask whatIsEnemy;
-    public GameObject chainLightingEffect;
+    public GameObject chainLightningEffect;
 
-    protected override void ActivateAbility(Transform player)
+    // Implementing the abstract method from SOAbilities
+    protected override void UseAbility(Transform player)
     {
-        Debug.Log("Chain Lighting Ability Activated");
-        ChainLightningAbility(player.position, remainingChains);
+        Debug.Log("Chain Lightning Ability Activated");
+        ChainLightningEffect(player.position, maxChains, damage);
     }
 
-    private void ChainLightningAbility(Vector2 startPosition, int remainingChains)
+    
+    private void ChainLightningEffect(Vector2 startPosition, int remainingChains, float currentDamage)
     {
         Vector2 currentPosition = startPosition;
 
         for (int i = 0; i < remainingChains; i++)
         {
-            // Find the closest enemy within range
-            Collider2D nearestEnemy = FindClosetEnemy(currentPosition);
+            //find closest enemy
+            Collider2D nearestEnemy = FindClosestEnemy(currentPosition);
             if (nearestEnemy == null)
             {
                 Debug.Log("No more enemies in range.");
-                break; // Stop chaining if no enemy is found
+                break; 
             }
 
-            // Deal damage to the enemy
+            
             var enemy = nearestEnemy.GetComponent<EnemyController>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
-                Debug.Log($"Chain Lightning hit: {enemy.name}, Chain {i + 1}");
+                enemy.TakeDamage(currentDamage);
+                Debug.Log($"Chain Lightning hit: {enemy.name}, Chain {i + 1}, Damage: {currentDamage}");
             }
 
             
-            if (chainLightingEffect!= null)
+            if (chainLightningEffect != null)
             {
-                Instantiate(chainLightingEffect, nearestEnemy.transform.position, Quaternion.identity);
+                Instantiate(chainLightningEffect, nearestEnemy.transform.position, Quaternion.identity);
             }
 
-            
             currentPosition = nearestEnemy.transform.position;
+            currentDamage *= 1 - damageReductionPerChain;
         }
     }
 
-
-
-
-    private Collider2D FindClosetEnemy(Vector2 currentPosition)
+    
+    private Collider2D FindClosestEnemy(Vector2 currentPosition)
     {
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(currentPosition, radius, whatIsEnemy);
         Collider2D nearestEnemy = null;

@@ -12,7 +12,7 @@ public class AbilityManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                abilities[i].Use(transform);
+                abilities[i].ActivateAbility(transform);
             }
         }
     }

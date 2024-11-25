@@ -19,6 +19,7 @@ public class FlameThrower : SOGuns
     {
         base.Initialize();
         canHoldTrigger = true;
+        usesFuel = true;
     }
 
     public override void Fire(Transform weaponOrigin, Vector2 target)

@@ -10,6 +10,7 @@ public class FrostGun : SOGuns
     public float MaxSlow = 0.5f;
     public float tickRate = 0.5f;
     public float fuelConsumption = 5f;
+    
 
     private float currentFuel;
     private bool isFiring;
@@ -19,6 +20,8 @@ public class FrostGun : SOGuns
     {
         base.Initialize();
         currentFuel = maxAmmo;
+        canHoldTrigger = true;
+        usesFuel = true;
     }
 
     public override void ActivateWeapon(Transform weaponOrigin, Vector2 target)

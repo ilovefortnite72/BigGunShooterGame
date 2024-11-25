@@ -20,16 +20,21 @@ public class RazorBlade : SOGuns
 
         Vector2 direction = (target - (Vector2)weaponOrigin.position).normalized;
 
-        GameObject blade = Instantiate(razorBladePrefab, weaponOrigin.position, Quaternion.identity);
-        RazorBladeController bladeController = blade.GetComponent<RazorBladeController>();
+        GameObject blade = ObjectPoolManager.SpawnObject(razorBladePrefab, weaponOrigin.position, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
 
-        if (bladeController != null)
+        if (blade != null)
         {
-            bladeController.Initialize(direction, bladeSpeed, damage, maxBounces, whatIsEnemy);
-        }
-        else
-        {
-            Debug.LogError("Razor Blade Controller is null");
+
+            RazorBladeController bladeController = blade.GetComponent<RazorBladeController>();
+
+            if (bladeController != null)
+            {
+                bladeController.Initialize(direction, bladeSpeed, damage, maxBounces, whatIsEnemy);
+            }
+            else
+            {
+                Debug.LogError("Razor Blade Controller is null");
+            }
         }
     }
 }

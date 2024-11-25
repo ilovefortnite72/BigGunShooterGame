@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum WeaponType { Melee, Ranged, Projectile }
 public abstract class SOGuns : ScriptableObject
@@ -20,6 +22,7 @@ public abstract class SOGuns : ScriptableObject
     public bool isReloading;
     public float nextTimeToFire;
     public bool canHoldTrigger;
+    public bool usesFuel;
     public AudioClip reloadSound;
     public AudioClip shootSound;
     public AudioClip emptyMagClip;
@@ -31,6 +34,8 @@ public abstract class SOGuns : ScriptableObject
         currentAmmo = maxAmmo;
         isReloading = false;
         nextTimeToFire = 0f;
+        
+        
     }
 
     public virtual void ActivateWeapon(Transform weaponOrigin, Vector2 target)
@@ -50,14 +55,19 @@ public abstract class SOGuns : ScriptableObject
             Fire(weaponOrigin, target);
             Debug.Log("Firing");
 
-            currentAmmo--;
-            nextTimeToFire = Time.time + (1f / fireRate);
-
-            if (currentAmmo <= 0)
+            if (!usesFuel)
             {
-                Reload();
+                currentAmmo--;
+                
+
+                if (currentAmmo <= 0)
+                {
+                    Reload();
+                }
             }
+            nextTimeToFire = Time.time + (1f / fireRate);
         }
+                
     }
 
     public virtual void HoldFire(Transform weaponOrigin, Vector2 target)
@@ -106,6 +116,8 @@ public abstract class SOGuns : ScriptableObject
         }
     }
 
+
+    
 
     public virtual void Reload()
     {

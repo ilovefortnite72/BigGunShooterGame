@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     private Vector2 target;
-    public LineRenderer lineRenderer;
+    
 
 
     [Header("Movement Stuff")]
@@ -28,7 +29,9 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI currentammoText;
     public TextMeshProUGUI maxammoText;
     public Slider HealthSlider;
-    public UIController UIC;
+    public GameObject ammoInfoUI;
+    public Slider fuelSlider;
+    
 
 
     [Header("Healh Stuff")]
@@ -41,17 +44,28 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         currenthealth = maxhealth;
-        UpdateAmmoUI();
+        UpdateWeaponUI();
+        UpdateUIVisibility();
     }
-
-    
 
     void Update()
     {
         LookDirection();
         Move();
-        UpdateAmmoUI();
+        UpdateWeaponUI();
 
+        UseGuns();
+        UseAbility();
+
+    }
+
+    private void UseAbility()
+    {
+        
+    }
+
+    private void UseGuns()
+    {
         if (equippedWeapon != null)
         {
             if (equippedWeapon.canHoldTrigger)
@@ -59,7 +73,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetMouseButton(0)) // Use GetMouseButton to continuously fire while the button is held
                 {
                     equippedWeapon.HoldFire(weaponOrigin, target);
-                    UpdateAmmoUI();
+                    UpdateWeaponUI();
                 }
             }
             else
@@ -67,7 +81,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetMouseButtonDown(0)) // Use GetMouseButtonDown for single fire
                 {
                     equippedWeapon.ActivateWeapon(weaponOrigin, target);
-                    UpdateAmmoUI();
+                    UpdateWeaponUI();
                 }
             }
 
@@ -79,10 +93,9 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 equippedWeapon.Reload();
-                UpdateAmmoUI();
+                UpdateWeaponUI();
             }
         }
-
     }
 
     private void Move()
@@ -129,17 +142,43 @@ public class PlayerController : MonoBehaviour
         if (NewWeapon.gunPrefab != null) //instantiate new weapon based on weaponmanager logic, passed from #GameManager
         {
             CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
-            UpdateAmmoUI();
+            UpdateWeaponUI();
         }
 
     }
             //update ammo ui
-    private void UpdateAmmoUI()
+    public void UpdateUIVisibility()
     {
-        if(equippedWeapon != null)
+        if (equippedWeapon != null)
         {
-            currentammoText.text = equippedWeapon.currentAmmo.ToString();
-            maxammoText.text = equippedWeapon.maxAmmo.ToString();
+            bool usesFuel = equippedWeapon.usesFuel;
+
+            fuelSlider.gameObject.SetActive(usesFuel);
+            ammoInfoUI.gameObject.SetActive(!usesFuel);
+
+            if (usesFuel)
+            {
+                fuelSlider.maxValue = equippedWeapon.maxAmmo;
+                fuelSlider.value = equippedWeapon.currentAmmo;
+            }
+
+        }
+    }
+
+
+    private void UpdateWeaponUI()
+    {
+        if (equippedWeapon != null)
+        {
+            if (equippedWeapon.usesFuel)
+            {
+                fuelSlider.value = equippedWeapon.currentAmmo;
+            }
+            else
+            {
+                currentammoText.text = equippedWeapon.currentAmmo.ToString();
+                maxammoText.text = equippedWeapon.maxAmmo.ToString();
+            }
         }
         else
         {
@@ -181,10 +220,7 @@ public class PlayerController : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public LineRenderer GetLineRenderer()
-    {
-        return lineRenderer;
-    }
+    
 
 
 }
