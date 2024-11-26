@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public Slider HealthSlider;
     public GameObject ammoInfoUI;
     public Slider fuelSlider;
+    public GameObject deathScreen;
     
 
 
@@ -217,10 +218,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Die()
     {
-        throw new NotImplementedException();
+        deathScreen.SetActive(true);
     }
-
-    
-
 
 }

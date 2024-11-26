@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MiniGun
   m_EditorClassIdentifier: 
   weaponType: 0
-  gunSprite: {fileID: 0}
+  gunSprite: {fileID: 21300000, guid: 23871984806dea84b9d318a06267b26d, type: 3}
   gunPrefab: {fileID: 0}
   whatIsEnemy:
     serializedVersion: 2
@@ -28,7 +28,8 @@ MonoBehaviour:
   spread: 0.6
   isReloading: 0
   nextTimeToFire: 0
-  canHoldTrigger: 0
+  canHoldTrigger: 1
+  usesFuel: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}

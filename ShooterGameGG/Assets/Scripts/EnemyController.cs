@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("Enemy Stats")]
     public float maxhealth = 100f;
     public float currenthealth;
     public float baseSpeed = 5f;
@@ -17,7 +18,6 @@ public class EnemyController : MonoBehaviour
     public float PlayerDamage = 10;
     public bool isDead = false;
 
-
     private float currentSpeed;
     private float slowEffect = 0f;
     private float slowTimer = 1f;
@@ -25,6 +25,10 @@ public class EnemyController : MonoBehaviour
 
     private Coroutine resetSlowCoroutine;
     private NavMeshAgent agent;
+
+    [Header("Score")]
+    public GameManager gm;
+    public int scoreValue = 10;
 
     void Start()
     {
@@ -126,6 +130,7 @@ public class EnemyController : MonoBehaviour
     {
         eAnim.SetBool("isDead", true);
         isDead = true;
+        gm.AddScore(scoreValue);
         ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

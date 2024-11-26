@@ -19,6 +19,8 @@ public abstract class SOAbilities : ScriptableObject
     public float stunDuration;
     private float lastActivatedTime;
 
+    public UIController AbilityUI;
+
 
     public bool IsOnCooldown => Time.time < lastActivatedTime + cooldown;
 
@@ -28,6 +30,11 @@ public abstract class SOAbilities : ScriptableObject
         {
             UseAbility(player);
             StartCooldown();
+
+            if(AbilityUI != null)
+            {
+                AbilityUI.StartCooldown();
+            }
         }
         else
         {
