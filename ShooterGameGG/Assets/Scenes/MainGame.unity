@@ -1632,12 +1632,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponProgression:
-  - {fileID: 11400000, guid: 08de6a6ed4e04ad4aba6326f3dcb6f6c, type: 2}
   - {fileID: 11400000, guid: 03e66543e7c5a564784a4bf626765386, type: 2}
+  - {fileID: 11400000, guid: 08de6a6ed4e04ad4aba6326f3dcb6f6c, type: 2}
   - {fileID: 11400000, guid: eb1c6038701dfe24c86a127eec047883, type: 2}
   - {fileID: 11400000, guid: 94414e6439d08dc43b0e9594d20366bb, type: 2}
   - {fileID: 11400000, guid: 2d9ffab2b80cfdd46bec42bae5878492, type: 2}
+  - {fileID: 11400000, guid: 06f34656f169478459d0837791f0c2ce, type: 2}
   - {fileID: 11400000, guid: f81f4c9a602fdcb468310a5281af6f9f, type: 2}
+  - {fileID: 11400000, guid: 1a668c3a47666cd498a919d8c90677e2, type: 2}
   playerScore: 0
   ScoreForUpgrade: 10
   scoreText: {fileID: 1559864140}
@@ -4951,7 +4953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!120 &1496791723
 LineRenderer:
   serializedVersion: 2
@@ -7766,6 +7768,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147230823}
   m_CullTransparentMesh: 1
+--- !u!1001 &4166058606939355539
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.4516487
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.8848066
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 575356642148837916, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173400142533776873, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
+      propertyPath: m_Name
+      value: miniGun
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -7780,3 +7839,4 @@ SceneRoots:
   - {fileID: 1599635755}
   - {fileID: 1183407869}
   - {fileID: 1496791724}
+  - {fileID: 4166058606939355539}

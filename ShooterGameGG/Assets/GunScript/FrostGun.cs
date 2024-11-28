@@ -22,7 +22,7 @@ public class FrostGun : SOGuns
         currentFuel = maxAmmo;
         canHoldTrigger = true;
         usesFuel = true;
-        frostGunCollider = gunPrefab.GetComponentInChildren<Collider2D>();
+        frostGunCollider = gunPrefab.GetComponent<Collider2D>();
     }
 
     public override void ActivateWeapon(Transform weaponOrigin, Vector2 target)
@@ -48,7 +48,7 @@ public class FrostGun : SOGuns
     }
 
 
-    public override void StopFire(Transform weaponOrigin)
+    public void StopFire(Transform weaponOrigin)
     {
         if (isFiring)
         {

@@ -19,7 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gunName: RPG
-  damage: 80
+  damage: 30
   fireRate: 6
   range: 100000
   reloadTime: 4
@@ -27,7 +27,9 @@ MonoBehaviour:
   maxAmmo: 1
   spread: 0
   isReloading: 0
+  nextTimeToFire: 0
   canHoldTrigger: 0
+  usesFuel: 0
   reloadSound: {fileID: 0}
   shootSound: {fileID: 0}
   emptyMagClip: {fileID: 8300000, guid: 4ff87420f998ecf4f93963abe6874813, type: 3}
@@ -36,3 +38,4 @@ MonoBehaviour:
   explosionRadius: 10
   explosionDamage: 80
   explosionSound: {fileID: 0}
+  explosionVFX: {fileID: 0}

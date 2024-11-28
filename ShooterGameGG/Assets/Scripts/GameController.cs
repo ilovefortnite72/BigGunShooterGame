@@ -15,9 +15,12 @@ public class GameController : MonoBehaviour
 
     public PlayerController playerController;
 
+    // Flag to prevent multiple upgrades at once
+    private bool isUpgrading = false;
+
     private void Start()
     {
-        if(weaponProgression.Length > 0)
+        if (weaponProgression.Length > 0)
         {
             playerController.EquipWeapon(weaponProgression[currentWeaponIndex]);
         }
@@ -29,20 +32,18 @@ public class GameController : MonoBehaviour
         playerScore += Score;
         UpdateScoreUI();
 
-
-        if (playerScore >= ScoreForUpgrade)
+        // Only upgrade if the score threshold is reached and we aren't already upgrading
+        if (playerScore >= ScoreForUpgrade && !isUpgrading)
         {
-            UpgradeWeapon();
-            playerScore = 0;
-            UpdateScoreUI();
+            StartCoroutine(UpgradeWeapon());
         }
     }
 
     private void UpdateScoreUI()
     {
-        if (scoreText != null) 
-        { 
-            scoreText.text = "Score:" + playerScore.ToString();
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + playerScore.ToString();
         }
         else
         {
@@ -50,9 +51,22 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void UpgradeWeapon()
+    // Coroutine to handle weapon upgrade to ensure one upgrade happens after another
+    private IEnumerator UpgradeWeapon()
     {
+        isUpgrading = true;  // Lock the upgrade process
+
+        Debug.Log("Weapon upgraded: " + playerScore);
+
+        // Upgrade the weapon
         currentWeaponIndex = Mathf.Clamp(currentWeaponIndex + 1, 0, weaponProgression.Length - 1);
         playerController.EquipWeapon(weaponProgression[currentWeaponIndex]);
+        playerScore = 0;  // Reset score after upgrade
+
+        yield return new WaitForSeconds(1f);  
+
+        Debug.Log($"Current score after upgrade: {playerScore}");
+
+        isUpgrading = false;  // Allow the next upgrade to happen
     }
 }

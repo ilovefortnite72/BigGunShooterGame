@@ -36,7 +36,7 @@ public class ShotGunBullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"Collision with {collision.gameObject.name}");
+       
         if (collision.gameObject.CompareTag("Enemy"))
         {
             var enemy = collision.gameObject.GetComponent<EnemyController>();

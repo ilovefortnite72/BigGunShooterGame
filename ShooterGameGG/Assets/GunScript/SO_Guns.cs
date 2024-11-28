@@ -82,10 +82,6 @@ public abstract class SOGuns : ScriptableObject
         }
     }
 
-    public virtual void StopFire(Transform weaponOrigin)
-    {
-        
-    }
 
     public virtual void Fire(Transform weaponOrigin, Vector2 target)
     {

@@ -19,15 +19,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   gunName: Shotgun
-  damage: 50
+  damage: 20
   fireRate: 2
   range: 30
   reloadTime: 4
-  currentAmmo: 5
+  currentAmmo: 6
   maxAmmo: 6
   spread: 0.45
   isReloading: 0
-  nextTimeToFire: 5.6062307
+  nextTimeToFire: 5.108479
   canHoldTrigger: 0
   usesFuel: 0
   reloadSound: {fileID: 0}

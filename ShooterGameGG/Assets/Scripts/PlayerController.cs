@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private GameObject CurrentWeaponInstance;
     public Transform weaponOrigin;
     private Vector2 target;
+    private bool isShooting;
     
 
 
@@ -55,47 +56,64 @@ public class PlayerController : MonoBehaviour
         Move();
         UpdateWeaponUI();
 
-        UseGuns();
-        UseAbility();
-
-    }
-
-    private void UseAbility()
-    {
+        HandleShooting();
         
+
     }
 
-    private void UseGuns()
+
+    private void HandleShooting()
     {
         if (equippedWeapon != null)
         {
-            if (equippedWeapon.canHoldTrigger)
+            // Handling fire modes
+            if (equippedWeapon.canHoldTrigger) // Continuous fire while holding the mouse
             {
-                if (Input.GetMouseButton(0)) // Use GetMouseButton to continuously fire while the button is held
+                if (Input.GetMouseButton(0)) // While holding mouse button
                 {
-                    equippedWeapon.HoldFire(weaponOrigin, target);
-                    UpdateWeaponUI();
+                    if (!isShooting)
+                    {
+                        isShooting = true;
+                        StartCoroutine(FireWeapon());
+                    }
+                }
+                else if (Input.GetMouseButtonUp(0)) // Stop shooting when the mouse is released
+                {
+                    isShooting = false;
                 }
             }
-            else
+            else // Single-shot weapons (trigger fire)
             {
-                if (Input.GetMouseButtonDown(0)) // Use GetMouseButtonDown for single fire
+                if (Input.GetMouseButtonDown(0)) // Fire on button press
                 {
                     equippedWeapon.ActivateWeapon(weaponOrigin, target);
                     UpdateWeaponUI();
                 }
             }
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                equippedWeapon.StopFire(weaponOrigin);
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R)) // Reload action
             {
                 equippedWeapon.Reload();
                 UpdateWeaponUI();
             }
+        }
+    }
+
+    private IEnumerator FireWeapon()
+    {
+        if (equippedWeapon.currentAmmo <= 0)
+        {
+            yield break; // Don't fire if no ammo is left
+        }
+
+        // Fire continuously while holding the mouse button, respecting the fire rate
+        while (isShooting && equippedWeapon.currentAmmo > 0)
+        {
+            equippedWeapon.ActivateWeapon(weaponOrigin, target); // Call ActivateWeapon from the ScriptableObject
+            UpdateWeaponUI();
+
+            // Wait for the time between shots based on the fire rate
+            yield return new WaitForSeconds(1f / equippedWeapon.fireRate); // Fire rate logic
         }
     }
 
@@ -131,23 +149,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void EquipWeapon(SOGuns NewWeapon)  //refresh weapon upon picking up new weapon
+    private void StopFiring()
     {
-        if(CurrentWeaponInstance != null)
+        // Stop firing when swapping weapons
+        isShooting = false;
+        StopAllCoroutines(); // Stop any ongoing fire coroutines
+    }
+
+    public void EquipWeapon(SOGuns newWeapon) // Refresh weapon upon picking up a new weapon
+    {
+        StopFiring(); // Stop firing the previous weapon before equipping the new one
+
+        if (CurrentWeaponInstance != null)
         {
             Destroy(CurrentWeaponInstance);
         }
-        equippedWeapon = NewWeapon;
+
+        equippedWeapon = newWeapon;
         weaponOrigin.localRotation = Quaternion.identity;
 
-        if (NewWeapon.gunPrefab != null) //instantiate new weapon based on weaponmanager logic, passed from #GameManager
+        if (newWeapon.gunPrefab != null) // Instantiate new weapon based on weaponManager logic
         {
-            CurrentWeaponInstance = Instantiate(NewWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
+            CurrentWeaponInstance = Instantiate(newWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
             UpdateWeaponUI();
         }
-
     }
-            //update ammo ui
+    //update ammo ui
     public void UpdateUIVisibility()
     {
         if (equippedWeapon != null)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 0
   gunSprite: {fileID: 21300000, guid: 23871984806dea84b9d318a06267b26d, type: 3}
-  gunPrefab: {fileID: 0}
+  gunPrefab: {fileID: 6173400142533776873, guid: ed4ad9b939b32274a90c1f40e73d5f83, type: 3}
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 8
@@ -23,11 +23,11 @@ MonoBehaviour:
   fireRate: 30
   range: 80
   reloadTime: 6
-  currentAmmo: 200
+  currentAmmo: 126
   maxAmmo: 200
   spread: 0.6
   isReloading: 0
-  nextTimeToFire: 0
+  nextTimeToFire: 23.015163
   canHoldTrigger: 1
   usesFuel: 0
   reloadSound: {fileID: 0}
@@ -37,3 +37,4 @@ MonoBehaviour:
   overHeatIncrease: 5
   overHeatCooldown: 2
   overHeatedTime: 2
+  firingParticleSystem: {fileID: 0}

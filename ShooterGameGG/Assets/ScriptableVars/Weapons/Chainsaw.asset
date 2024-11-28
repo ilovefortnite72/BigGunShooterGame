@@ -17,7 +17,7 @@ MonoBehaviour:
   gunPrefab: {fileID: 5188269981767365675, guid: 1b984437e8d44934fb0d50067d1d6252, type: 3}
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 8
   gunName: Chainsaw
   damage: 40
   fireRate: 100
@@ -35,3 +35,4 @@ MonoBehaviour:
   emptyMagClip: {fileID: 0}
   chainsawEffectPrefab: {fileID: 0}
   DamageTickRate: 0.5
+  damageDuration: 2
