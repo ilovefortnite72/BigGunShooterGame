@@ -6,6 +6,7 @@ public class BulletBehaviour : MonoBehaviour
 {
     public float Bspeed;
     private Vector2 direction;
+    private int damage;
     private float destroyTimer = 2f;
 
     private Coroutine returnToPoolTimer;
@@ -16,7 +17,7 @@ public class BulletBehaviour : MonoBehaviour
     }
 
     //add force once instantiated
-    public void Initialize(float speed, float bulletSpeed, Vector2 direction)
+    public void Initialize(float speed, Vector2 direction)
     {
         this.Bspeed = speed;
         this.direction = direction;
@@ -36,7 +37,7 @@ public class BulletBehaviour : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.GetComponent<EnemyController>().TakeDamage(Bspeed);
+            
             StopCoroutine(returnToPoolTimer);
             ObjectPoolManager.ReturnObjectToPool(gameObject);
         }

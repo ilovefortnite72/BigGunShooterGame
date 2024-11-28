@@ -34,8 +34,6 @@ public abstract class SOGuns : ScriptableObject
     {
         currentAmmo = maxAmmo;
         isReloading = false;
-        nextTimeToFire = 0f;
-        
         
     }
     public void Awake()
@@ -56,8 +54,7 @@ public abstract class SOGuns : ScriptableObject
             return;
         }
 
-        if (fireRate <= nextTimeToFire)
-        {
+        
             Fire(weaponOrigin, target);
             Debug.Log("Firing");
 
@@ -72,7 +69,7 @@ public abstract class SOGuns : ScriptableObject
                 }
             }
             nextTimeToFire = Time.time - (1f / fireRate);
-        }
+        
                 
     }
 

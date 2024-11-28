@@ -10,7 +10,7 @@ using Random = System.Random;
 public class MachineGun : SOGuns
 {
     public LineRenderer lineRenderer;
-    private float firetime;
+    
     public GameObject bulletPrefab;
     public float bulletSpeed;
 
@@ -18,7 +18,7 @@ public class MachineGun : SOGuns
     public override void Fire(Transform weaponOrigin, Vector2 target)
     {
         
-        firetime = Time.time;
+        
 
         Vector2 direction = (target - (Vector2)weaponOrigin.position).normalized;
 
@@ -32,7 +32,7 @@ public class MachineGun : SOGuns
 
         if (bulletBeh != null)
         {
-            bulletBeh.Initialize(damage, bulletSpeed, direction);
+            bulletBeh.Initialize(bulletSpeed,  direction);
         }
 
         if(shootSound != null)

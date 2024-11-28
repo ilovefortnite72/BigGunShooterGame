@@ -2,9 +2,11 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 public class EnemyController : MonoBehaviour
 {
@@ -27,11 +29,13 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent agent;
 
     [Header("Score")]
-    public GameManager gm;
-    public int scoreValue = 10;
+    public GameController gm;
+    public int Score = 10;
+    
 
     void Start()
     {
+        
         currenthealth = maxhealth;
         target = GameObject.FindGameObjectWithTag("Player").transform;
         currentSpeed = baseSpeed;
@@ -48,6 +52,13 @@ public class EnemyController : MonoBehaviour
         {
             agent.speed = currentSpeed;
         }
+
+
+        gm = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        if (gm == null)
+        {
+            Debug.LogError("GameController not found");
+        }
     }
 
 
@@ -56,6 +67,10 @@ public class EnemyController : MonoBehaviour
         MoveToPlayer();
         LookatPlayer();
         
+        if (currenthealth <= 0)
+        {
+            Die();
+        }
 
     }
 
@@ -98,10 +113,6 @@ public class EnemyController : MonoBehaviour
 
         Debug.Log($"{gameObject.name} took {damage} damage. Current health: {currenthealth}");
 
-        if (currenthealth <= 0)
-        {
-            Die();
-        }
     }
 
     public void SlowEffect(float slowAmount, float MaxSlow)
@@ -126,11 +137,19 @@ public class EnemyController : MonoBehaviour
         currentSpeed = baseSpeed;
     }
 
-    private void Die()
+    public void Die() 
     {
-        eAnim.SetBool("isDead", true);
-        isDead = true;
-        gm.AddScore(scoreValue);
+        Destroy(gameObject);
+
+        if (gm != null)
+        {
+            gm.AddScore(Score);
+        }
+        else
+        {
+            Debug.Log("shoot me in the dick");
+        }
+        
         ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

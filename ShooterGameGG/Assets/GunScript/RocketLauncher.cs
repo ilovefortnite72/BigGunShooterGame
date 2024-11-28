@@ -10,6 +10,12 @@ public class RocketLauncher : SOGuns
     public float explosionRadius;
     public float explosionDamage;
     public AudioClip explosionSound;
+    public GameObject explosionVFX;
+
+    private void Start()
+    {
+        Initialize();
+    }
 
 
     public override void Fire(Transform weaponOrigin, Vector2 target)
@@ -27,7 +33,7 @@ public class RocketLauncher : SOGuns
 
         if(rocketScript != null)
         {
-            rocketScript.Initialize(explosionRadius, explosionDamage, explosionSound);
+            rocketScript.Initialize(explosionRadius, explosionDamage, explosionSound, explosionVFX);
         }
 
     }

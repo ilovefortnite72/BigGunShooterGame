@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxhealth: 100
-  currenthealth: 0
+  currenthealth: 10
   baseSpeed: 5
   target: {fileID: 0}
   canAttack: 1
@@ -112,6 +112,8 @@ MonoBehaviour:
   PlayerDamage: 10
   isDead: 0
   eAnim: {fileID: 0}
+  gm: {fileID: 0}
+  scoreValue: 10
 --- !u!60 &1081435493437719179
 PolygonCollider2D:
   m_ObjectHideFlags: 0

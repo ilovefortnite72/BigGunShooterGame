@@ -20,14 +20,14 @@ MonoBehaviour:
     m_Bits: 8
   gunName: MachineGun
   damage: 10
-  fireRate: 100
+  fireRate: 1000
   range: 100
   reloadTime: 2
-  currentAmmo: 24
+  currentAmmo: 16
   maxAmmo: 30
   spread: 0
   isReloading: 0
-  nextTimeToFire: 22.771502
+  nextTimeToFire: 13.629399
   canHoldTrigger: 0
   usesFuel: 0
   reloadSound: {fileID: 0}

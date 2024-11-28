@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         deathScreen.SetActive(true);
+        Time.timeScale = 0;
     }
 
 }

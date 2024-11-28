@@ -13,7 +13,8 @@ public class ObjectPoolManager : MonoBehaviour
     private GameObject _particleSystemPoolEmptyHolder;
     private GameObject _gameObjectPoolEmptyHolder;
     private GameObject _vfxPoolEmptyHolder;
-    public GameObject _enemyPoolEmptyHolder;
+    private GameObject _enemyPoolEmptyHolder;
+    private GameObject _bulletPoolEmptyHolder;
 
     public enum PoolType
     {
@@ -21,6 +22,7 @@ public class ObjectPoolManager : MonoBehaviour
         GameObject,
         VFX,
         Enemy,
+        Bullet,
         None
     }
     public static PoolType PoolingType;
@@ -41,6 +43,8 @@ public class ObjectPoolManager : MonoBehaviour
         _vfxPoolEmptyHolder.transform.SetParent(objectPoolEmptyHolder.transform);
         _enemyPoolEmptyHolder = new GameObject("Pooled Enemies");
         _enemyPoolEmptyHolder.transform.SetParent(objectPoolEmptyHolder.transform);
+        _bulletPoolEmptyHolder = new GameObject("Pooled Bullets");
+        _bulletPoolEmptyHolder.transform.SetParent(objectPoolEmptyHolder.transform);
 
     }
 

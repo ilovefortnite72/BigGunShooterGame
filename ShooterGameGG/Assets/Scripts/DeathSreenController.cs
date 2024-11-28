@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class DeathSreenController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject currentUI;
+    public void OnButtonPress()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentUI.SetActive(false);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 }

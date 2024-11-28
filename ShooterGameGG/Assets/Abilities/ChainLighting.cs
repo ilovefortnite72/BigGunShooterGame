@@ -16,25 +16,24 @@ public class ChainLighting : SOAbilities
     protected override void UseAbility(Transform player)
     {
         Debug.Log("Chain Lightning Ability Activated");
-        ChainLightningEffect(player.position, maxChains, damage);
+        CoroutineHelper.Instance.StartCoroutine(ChainLightningEffect(player.position, maxChains, damage));
     }
 
-    
-    private void ChainLightningEffect(Vector2 startPosition, int remainingChains, float currentDamage)
+    private IEnumerator ChainLightningEffect(Vector2 startPosition, int remainingChains, float currentDamage)
     {
         Vector2 currentPosition = startPosition;
+        List<Vector3> positions = new List<Vector3> { currentPosition };
 
         for (int i = 0; i < remainingChains; i++)
         {
-            //find closest enemy
+            // Find closest enemy
             Collider2D nearestEnemy = FindClosestEnemy(currentPosition);
             if (nearestEnemy == null)
             {
                 Debug.Log("No more enemies in range.");
-                break; 
+                break;
             }
 
-            
             var enemy = nearestEnemy.GetComponent<EnemyController>();
             if (enemy != null)
             {
@@ -42,18 +41,27 @@ public class ChainLighting : SOAbilities
                 Debug.Log($"Chain Lightning hit: {enemy.name}, Chain {i + 1}, Damage: {currentDamage}");
             }
 
-            
-            if (chainLightningEffect != null)
-            {
-                Instantiate(chainLightningEffect, nearestEnemy.transform.position, Quaternion.identity);
-            }
-
             currentPosition = nearestEnemy.transform.position;
+            positions.Add(currentPosition);
             currentDamage *= 1 - damageReductionPerChain;
+
+            yield return new WaitForSeconds(0.1f); // Small delay between chains for visual effect
+        }
+
+        // Instantiate chain lightning effect and set up LineRenderer
+        if (chainLightningEffect != null && positions.Count > 1)
+        {
+            GameObject effectInstance = Instantiate(chainLightningEffect, positions[0], Quaternion.identity);
+            LineRenderer lineRenderer = effectInstance.GetComponent<LineRenderer>();
+            if (lineRenderer != null)
+            {
+                lineRenderer.positionCount = positions.Count;
+                lineRenderer.SetPositions(positions.ToArray());
+            }
+            Destroy(effectInstance, 0.5f); // Destroy the effect after a short delay
         }
     }
 
-    
     private Collider2D FindClosestEnemy(Vector2 currentPosition)
     {
         Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(currentPosition, radius, whatIsEnemy);
