@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        playerScore = 0;
         if (weaponProgression.Length > 0)
         {
             playerController.EquipWeapon(weaponProgression[currentWeaponIndex]);
@@ -61,7 +62,7 @@ public class GameController : MonoBehaviour
         // Upgrade the weapon
         currentWeaponIndex = Mathf.Clamp(currentWeaponIndex + 1, 0, weaponProgression.Length - 1);
         playerController.EquipWeapon(weaponProgression[currentWeaponIndex]);
-        playerScore = 0;  // Reset score after upgrade
+        
 
         yield return new WaitForSeconds(1f);  
 

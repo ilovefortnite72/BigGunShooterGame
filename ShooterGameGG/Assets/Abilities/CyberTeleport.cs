@@ -1,55 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
-[CreateAssetMenu(fileName = "BlinkAbility", menuName = "Abilities/BlinkAbility")]
-public class CyberTeleport : SOAbilities
+[CreateAssetMenu(fileName = "New Teleport Ability", menuName = "Abilities/TeleportAbility")]
+public class TeleportAbility : SOAbilities
 {
-    public float blinkDistance;
-    private bool hasBlinked;
-    public GameObject blinkEffect;
-    public LayerMask whatIsWall;
-
+    // This method contains the logic for teleportation
     protected override void UseAbility(Transform player)
     {
-    
-        Blink(player);
-        CoroutineHelper.Instance.StartCoroutine(BlinkEffect());
+        // Get the player's current position
+        Vector3 currentPosition = player.position;
 
-    }
+        // Calculate the teleport destination based on the player's forward direction and range
+        Vector3 teleportDirection = player.up.normalized; // Assuming 'up' is the forward direction in 2D
+        Vector3 targetPosition = currentPosition + teleportDirection * range;
 
-    private void Blink(Transform player)
-    {
-        
-        Vector2 currentPos = player.position;
-        ObjectPoolManager.SpawnObject(blinkEffect, currentPos, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
-        Vector2 direction = player.up;
+        // Teleport the player to the target position
+        player.position = targetPosition;
 
-
-        Vector2 newPos = currentPos + direction * blinkDistance;
-        if(Physics2D.OverlapCircle(newPos, 0.5f, whatIsWall) == null)
-        {
-            player.position = newPos;
-        }
-        else
-        {
-            player.position = currentPos;
-        }
-
-
-        ObjectPoolManager.SpawnObject(blinkEffect, newPos, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
-        hasBlinked = true;
-        
-    }
-
-    private IEnumerator BlinkEffect()
-    {
-        if (hasBlinked)
-        {
-            yield return new WaitForSeconds(0.1f);
-            hasBlinked = false;
-            ObjectPoolManager.ReturnObjectToPool(blinkEffect);
-        }
+        Debug.Log($"{abilityName} activated. Teleported to {targetPosition}");
     }
 }

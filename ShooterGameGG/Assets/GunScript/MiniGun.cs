@@ -10,9 +10,11 @@ public class MiniGun : SOGuns
     public float overHeatIncrease = 5f;
     public float overHeatCooldown = 2f;
     private bool isFiring = false;
-    public float overHeatedTime = 2f;
-
-    public ParticleSystem firingParticleSystem;  // Reference to the particle system
+    private float holdFireTime = 0f; // Timer to track hold time
+    public float fireDelay = 2f; // Time to hold before firing
+    public GameObject bulletPrefab;
+    public float bulletSpeed;
+    private float overHeatedTime = 3f;
 
     public override void Initialize()
     {
@@ -22,22 +24,26 @@ public class MiniGun : SOGuns
 
     public override void HoldFire(Transform weaponOrigin, Vector2 target)
     {
-        // Start firing if it's not already firing, not reloading, and we have ammo
-        if (!isFiring && !isReloading && Time.time >= nextTimeToFire && currentAmmo > 0)
+        // Accumulate time while the fire button is held
+        if (isFiring)
         {
-            isFiring = true;
-            CoroutineHelper.Instance.StartCoroutine(FiringDelay(weaponOrigin, target));
-        }
-        // If already firing, continue firing and apply overheating
-        else if (isFiring && overHeatLevel < overHeatThreshold)
-        {
-            // Continuously fire while holding the trigger and handle overheating
-            if (Time.time >= nextTimeToFire && currentAmmo > 0)
+            holdFireTime += Time.deltaTime;
+
+            // Once the fire button is held for 2 seconds, start firing
+            if (holdFireTime >= fireDelay && overHeatLevel < overHeatThreshold)
             {
-                ActivateWeapon(weaponOrigin, target);
-                overHeatLevel += overHeatIncrease * Time.deltaTime;  // Gradual increase in overheat
-                nextTimeToFire = Time.time + (1f / fireRate); // Maintain fire rate timing
+                if (Time.time >= nextTimeToFire && currentAmmo > 0)
+                {
+                    ActivateWeapon(weaponOrigin, target);
+                    overHeatLevel += overHeatIncrease * Time.deltaTime;
+                    nextTimeToFire = Time.time + (1f / fireRate); // Maintain fire rate timing
+                }
             }
+        }
+        else
+        {
+            // Reset fire delay timer when starting to hold fire
+            holdFireTime = 0f;
         }
 
         // Stop firing if overheated
@@ -89,13 +95,11 @@ public class MiniGun : SOGuns
         isFiring = false;  // Ensure firing is stopped
     }
 
-    public void StopFire(Transform weaponOrigin)
+    public override void StopFiring(Transform weaponOrigin)
     {
-        // Stop the particle system when the fire stops
-        if (firingParticleSystem != null && firingParticleSystem.isPlaying)
-        {
-            firingParticleSystem.Stop();
-        }
+        // Reset the firing and hold time when stopping fire
+        isFiring = false;
+        holdFireTime = 0f;
     }
 
     // Override ActivateWeapon to add the particle system effect when firing
@@ -103,10 +107,12 @@ public class MiniGun : SOGuns
     {
         base.ActivateWeapon(weaponOrigin, target);
 
-        // If the particle system is set up, play it when firing
-        if (firingParticleSystem != null && !firingParticleSystem.isPlaying)
+        Vector2 direction = (target - (Vector2)weaponOrigin.position).normalized;
+        GameObject bullet = ObjectPoolManager.SpawnObject(bulletPrefab, weaponOrigin.position, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
+        BulletBehaviour bulletBeh = bullet.GetComponent<BulletBehaviour>();
+        if (bulletBeh != null)
         {
-            firingParticleSystem.Play();
+            bulletBeh.Initialize(bulletSpeed, direction);
         }
 
         // Consume ammo

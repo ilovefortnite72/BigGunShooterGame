@@ -7,111 +7,117 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FlameThrower", menuName = "Guns/FlameThrower")]
 public class FlameThrower : SOGuns
 {
-    public float tickRate;
-    public ParticleSystem particleSystem;  // Note: Variable renamed to match proper casing
-    public float lastDamageTime;
-    public Collider2D col;
-    public float fuelConsumptionRate;
+    public float fuelConsumptionRate = 10f; // Fuel consumed per second
+    public float damagePerTick = 5f;       // Damage dealt per tick
+    public float fuelRechargeRate = 5f;    // Fuel recharged per second
+    public float tickRate = 0.5f;          // Interval between damage/slow applications
+
+    private ParticleSystem flameParticles;
+    private BoxCollider2D flameCollider;
+    private bool isRecharging = true;
+    private float tickTimer; // Timer to track ticks
 
     public override void Initialize()
     {
         base.Initialize();
-        canHoldTrigger = true;
-        usesFuel = true;
-        if (particleSystem != null)
-        {
-            particleSystem.Stop(); // Ensure the particle system is stopped when the weapon is initialized
-        }
-        
+        isRecharging = true; // Enable recharge on start
+        tickTimer = 0f;      // Initialize tick timer
     }
 
-    
-
-    public override void Fire(Transform weaponOrigin, Vector2 target)
+    public override void ActivateWeapon(Transform weaponOrigin, Vector2 target)
     {
-        if (currentAmmo <= 0)
+        if (currentAmmo <= 0 || isReloading)
         {
-            StopFire(weaponOrigin); // Stop fire if out of ammo
+            StopFiring(weaponOrigin);
             return;
         }
 
-        // Ensure we have a valid collider and particle system references
-        if (col == null)
+        // Stop recharging when firing starts
+        isRecharging = false;
+
+        // Find or create the flame components (Particles and Collider)
+        if (flameParticles == null || flameCollider == null)
         {
-            col = weaponOrigin.GetComponent<Collider2D>();
+            flameParticles = weaponOrigin.GetComponentInChildren<ParticleSystem>();
+            flameCollider = weaponOrigin.GetComponentInChildren<BoxCollider2D>();
+
+            if (flameParticles == null || flameCollider == null)
+            {
+                Debug.LogError("Flamethrower is missing its particle system or box collider.");
+                return;
+            }
         }
 
-        if (particleSystem == null)
-        {
-            particleSystem = weaponOrigin.GetComponent<ParticleSystem>();  // Get the particle system from a child if it's not directly attached
-        }
+        flameParticles.Play(); // Start particle effects
+        flameCollider.enabled = true; // Enable damage detection
 
-        // Start the particle system if it's not already playing
-        if (particleSystem != null && !particleSystem.isPlaying)
-        {
-            particleSystem.Play();
-        }
-
-        col.enabled = true;
+        // Continuously reduce fuel while firing
+        CoroutineHelper.Instance.StartCoroutine(ConsumeFuel(weaponOrigin));
     }
 
-    public override void HoldFire(Transform weaponOrigin, Vector2 target)
+    public override void StopFiring(Transform weaponOrigin)
     {
-        if (currentAmmo > 0)
-        {
-            Fire(weaponOrigin, target);
+        // Stop particles and disable the collider
+        if (flameParticles != null)
+            flameParticles.Stop();
+        if (flameCollider != null)
+            flameCollider.enabled = false;
 
-            // If the time is right, apply fire damage
-            if (Time.time >= lastDamageTime)
+        // Start recharging fuel
+        isRecharging = true;
+        CoroutineHelper.Instance.StartCoroutine(RechargeFuel());
+    }
+
+    private IEnumerator ConsumeFuel(Transform weaponOrigin)
+    {
+        while (currentAmmo > 0)
+        {
+            currentAmmo -= Mathf.RoundToInt(fuelConsumptionRate * Time.deltaTime);
+            if (currentAmmo <= 0)
             {
-                DealFireDamage();
-                lastDamageTime = Time.time + tickRate;
+                StopFiring(weaponOrigin);
+                yield break;
             }
 
-            // Reduce fuel over time (if needed, adjust accordingly)
-            currentAmmo -= Mathf.FloorToInt(fuelConsumptionRate * Time.deltaTime);
-            currentAmmo = Mathf.Clamp(currentAmmo, 0, maxAmmo);
-        }
-        else
-        {
-            StopFire(weaponOrigin); // Stop the fire if out of ammo
-        }
-    }
-
-    public void StopFire(Transform weaponOrigin)
-    {
-        // Stop the particle system if it's playing
-        if (particleSystem != null && particleSystem.isPlaying)
-        {
-            particleSystem.Stop();
-        }
-
-        // Disable the collider when not firing
-        if (col != null)
-        {
-            col.enabled = false;
-        }
-    }
-
-    private void DealFireDamage()
-    {
-        if (col == null) return;
-
-        // Get enemies in the flame's area and apply damage
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(
-            col.bounds.center,
-            col.bounds.size,
-            0f,
-            whatIsEnemy
-        );
-
-        foreach (var enemy in hitEnemies)
-        {
-            var enemyController = enemy.GetComponent<EnemyController>();
-            if (enemyController != null)
+            // Apply damage and slow at fixed intervals
+            tickTimer += Time.deltaTime;
+            if (tickTimer >= tickRate)
             {
-                enemyController.TakeDamage(damage);
+                tickTimer = 0f; // Reset timer
+                ApplyEffects(flameCollider);
             }
+
+            yield return null; // Wait for the next frame
+        }
+    }
+
+    private void ApplyEffects(BoxCollider2D collider)
+    {
+        Collider2D[] hits = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0, whatIsEnemy);
+        foreach (var hit in hits)
+        {
+            var enemy = hit.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damagePerTick);              // Apply damage
+                
+            }
+        }
+    }
+
+    private IEnumerator RechargeFuel()
+    {
+        while (isRecharging && currentAmmo < maxAmmo)
+        {
+            currentAmmo += Mathf.RoundToInt(fuelRechargeRate * Time.deltaTime);
+
+            if (currentAmmo >= maxAmmo)
+            {
+                currentAmmo = maxAmmo; // Clamp to max ammo
+                isRecharging = false;  // Stop recharging if full
+            }
+
+            yield return null; // Wait for the next frame
         }
     }
 }

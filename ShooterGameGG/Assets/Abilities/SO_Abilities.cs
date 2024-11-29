@@ -17,38 +17,42 @@ public abstract class SOAbilities : ScriptableObject
     public float damageOverTime;
     public float slowAmount;
     public float stunDuration;
+    public Transform player;
+    public GameObject orbPrefab;
+
     private float lastActivatedTime;
 
     public UIController AbilityUI;
 
+    public enum ProjectileDamageType { Ice, Fire }
+    public ProjectileDamageType DamageType;
 
-    public bool IsOnCooldown => Time.time < lastActivatedTime + cooldown;
-
-    public void ActivateAbility(Transform player)
+    // Checks if the ability is on cooldown
+    public bool IsOnCooldown()
     {
-        if (!IsOnCooldown)
-        {
-            UseAbility(player);
-            StartCooldown();
+        return Time.time < lastActivatedTime + cooldown; 
+    }
 
-            if(AbilityUI != null)
+
+    public virtual void ActivateAbility(Transform player)
+    {
+        if (!IsOnCooldown())
+        {
+            UseAbility(player);  
+            lastActivatedTime = Time.time;
+
+            if (AbilityUI != null)
             {
                 AbilityUI.StartCooldown();
             }
         }
-        else
-        {
-            Debug.Log("Ability is on cooldown");
-        }
     }
-    
+
     protected abstract void UseAbility(Transform player);
 
 
-    protected void StartCooldown()
-    {
-        lastActivatedTime = Time.time;
-    }
-
+    
 }
+
+
 

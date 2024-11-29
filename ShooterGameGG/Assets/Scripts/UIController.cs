@@ -26,6 +26,7 @@ public class UIController : MonoBehaviour
         cooldownSlider.value = coolDownTime;
 
         abilityIcon.sprite = ability.abilitySprite;
+        abilityIcon.rectTransform.rotation = Quaternion.Euler(0, 0, -90);
 
         CooldownTimer = 0;
 

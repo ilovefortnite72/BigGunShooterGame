@@ -23,11 +23,11 @@ MonoBehaviour:
   fireRate: 30
   range: 80
   reloadTime: 6
-  currentAmmo: 126
+  currentAmmo: 10
   maxAmmo: 200
   spread: 0.6
   isReloading: 0
-  nextTimeToFire: 23.015163
+  nextTimeToFire: 37.408062
   canHoldTrigger: 1
   usesFuel: 0
   reloadSound: {fileID: 0}
@@ -36,5 +36,6 @@ MonoBehaviour:
   overHeatThreshold: 100
   overHeatIncrease: 5
   overHeatCooldown: 2
-  overHeatedTime: 2
-  firingParticleSystem: {fileID: 0}
+  fireDelay: 2
+  bulletPrefab: {fileID: 2118768353264750261, guid: ce0b3dbec338808449ab6cee497ce373, type: 3}
+  bulletSpeed: 100

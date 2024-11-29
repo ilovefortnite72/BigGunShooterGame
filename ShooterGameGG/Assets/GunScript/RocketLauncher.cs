@@ -37,4 +37,9 @@ public class RocketLauncher : SOGuns
         }
 
     }
+
+    public override void StopFiring(Transform weaponOrigin)
+    {
+
+    }
 }

@@ -54,22 +54,24 @@ public abstract class SOGuns : ScriptableObject
             return;
         }
 
+            
         
-            Fire(weaponOrigin, target);
-            Debug.Log("Firing");
 
-            if (!usesFuel)
+        Fire(weaponOrigin, target);
+        Debug.Log("Firing");
+
+        if (!usesFuel)
+        {
+            currentAmmo--;
+            
+
+            if (currentAmmo <= 0)
             {
-                currentAmmo--;
-                
-
-                if (currentAmmo <= 0)
-                {
-                    Reload();
-                }
+                Reload();
             }
-            nextTimeToFire = Time.time - (1f / fireRate);
-        
+        }
+        nextTimeToFire = Time.time - (1f / fireRate);
+    
                 
     }
 
@@ -79,12 +81,14 @@ public abstract class SOGuns : ScriptableObject
         if (canHoldTrigger)
         {
             ActivateWeapon(weaponOrigin, target);
+            Debug.Log("Holding trigger");
         }
     }
 
 
     public virtual void Fire(Transform weaponOrigin, Vector2 target)
     {
+        Debug.Log("Fire method called");
         FireRaycasts(weaponOrigin, target, whatIsEnemy, range, damage);
         if (shootSound != null)
         {
@@ -135,6 +139,8 @@ public abstract class SOGuns : ScriptableObject
         Debug.Log("Reloaded");
     }
 
+
+    public abstract void StopFiring(Transform weaponOrigin);
 
 }
 

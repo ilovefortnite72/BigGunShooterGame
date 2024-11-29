@@ -37,4 +37,9 @@ public class RazorBlade : SOGuns
             }
         }
     }
+
+    public override void StopFiring(Transform weaponOrigin)
+    {
+        //throw new System.NotImplementedException();
+    }
 }

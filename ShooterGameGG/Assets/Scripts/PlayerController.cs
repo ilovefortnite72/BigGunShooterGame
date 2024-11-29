@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +32,9 @@ public class PlayerController : MonoBehaviour
     public GameObject ammoInfoUI;
     public Slider fuelSlider;
     public GameObject deathScreen;
-    
+    public GameObject pauseScreen;
+    private bool isPaused = false;
+
 
 
     [Header("Healh Stuff")]
@@ -57,7 +58,23 @@ public class PlayerController : MonoBehaviour
         UpdateWeaponUI();
 
         HandleShooting();
-        
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseScreen.SetActive(true);
+            isPaused = true;
+            Time.timeScale = 0;
+        }
+        if(isPaused)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                pauseScreen.SetActive(false);
+                isPaused = false;
+                Time.timeScale = 1;
+            }
+        }
+
 
     }
 
@@ -66,28 +83,29 @@ public class PlayerController : MonoBehaviour
     {
         if (equippedWeapon != null)
         {
-            // Handling fire modes
-            if (equippedWeapon.canHoldTrigger) // Continuous fire while holding the mouse
+            if (Input.GetMouseButtonDown(0)) // When LMB is pressed
             {
-                if (Input.GetMouseButton(0)) // While holding mouse button
+                if (equippedWeapon.canHoldTrigger) // Continuous fire weapons
                 {
                     if (!isShooting)
                     {
                         isShooting = true;
-                        StartCoroutine(FireWeapon());
+                        equippedWeapon.ActivateWeapon(weaponOrigin, target);
                     }
                 }
-                else if (Input.GetMouseButtonUp(0)) // Stop shooting when the mouse is released
-                {
-                    isShooting = false;
-                }
-            }
-            else // Single-shot weapons (trigger fire)
-            {
-                if (Input.GetMouseButtonDown(0)) // Fire on button press
+                else // Single-shot weapons
                 {
                     equippedWeapon.ActivateWeapon(weaponOrigin, target);
                     UpdateWeaponUI();
+                }
+            }
+
+            if (Input.GetMouseButtonUp(0)) // When LMB is released
+            {
+                if (equippedWeapon.canHoldTrigger && isShooting)
+                {
+                    isShooting = false;
+                    equippedWeapon.StopFiring(weaponOrigin);
                 }
             }
 
@@ -109,6 +127,7 @@ public class PlayerController : MonoBehaviour
         // Fire continuously while holding the mouse button, respecting the fire rate
         while (isShooting && equippedWeapon.currentAmmo > 0)
         {
+            Debug.Log("Firing102931");
             equippedWeapon.ActivateWeapon(weaponOrigin, target); // Call ActivateWeapon from the ScriptableObject
             UpdateWeaponUI();
 
@@ -152,6 +171,7 @@ public class PlayerController : MonoBehaviour
     private void StopFiring()
     {
         // Stop firing when swapping weapons
+        
         isShooting = false;
         StopAllCoroutines(); // Stop any ongoing fire coroutines
     }
@@ -170,7 +190,8 @@ public class PlayerController : MonoBehaviour
 
         if (newWeapon.gunPrefab != null) // Instantiate new weapon based on weaponManager logic
         {
-            CurrentWeaponInstance = Instantiate(newWeapon.gunPrefab, weaponOrigin.position, Quaternion.Euler(0, 0, 90), weaponOrigin);
+            CurrentWeaponInstance = Instantiate(newWeapon.gunPrefab, weaponOrigin.position, weaponOrigin.rotation, weaponOrigin);
+            CurrentWeaponInstance.transform.right = weaponOrigin.up;
             UpdateWeaponUI();
         }
     }

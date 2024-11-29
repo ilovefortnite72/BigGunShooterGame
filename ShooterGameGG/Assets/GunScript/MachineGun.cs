@@ -40,4 +40,8 @@ public class MachineGun : SOGuns
             AudioSource.PlayClipAtPoint(shootSound, weaponOrigin.position);
         }
     }
+    public override void StopFiring(Transform weaponOrigin)
+    {
+        
+    }
 }

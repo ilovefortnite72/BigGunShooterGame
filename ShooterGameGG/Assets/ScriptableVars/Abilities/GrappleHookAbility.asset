@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a11dc8e6c21c24488e9b6a941fa34d, type: 3}
-  m_Name: BlinkAbility
+  m_Script: {fileID: 11500000, guid: e8f72f9f1727c19428198f6243d32d22, type: 3}
+  m_Name: GrappleHookAbility
   m_EditorClassIdentifier: 
-  abilityName: Blink
-  abilitySprite: {fileID: 21300000, guid: 87464c5540b6ae842ab0fff2e1b9738e, type: 3}
-  cooldown: 12
-  range: 5
+  abilityName: GrappleHook
+  abilitySprite: {fileID: 7482667652216324306, guid: 30593a2b43cb64b4796a5ae7f5b83006, type: 3}
+  cooldown: 7
+  range: 10
   damage: 0
   duration: 0
   radius: 0
@@ -28,3 +28,11 @@ MonoBehaviour:
   orbPrefab: {fileID: 0}
   AbilityUI: {fileID: 0}
   DamageType: 0
+  grapplePrefab: {fileID: 2680824765779285012, guid: 640f4f458533d9645a5fdc22f4951625, type: 3}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  pullSpeed: 5

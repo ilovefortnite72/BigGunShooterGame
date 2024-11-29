@@ -23,4 +23,8 @@ public class Shotgun : SOGuns
         }
     }
 
+    public override void StopFiring(Transform weaponOrigin)
+    {
+        //throw new System.NotImplementedException();
+    }
 }

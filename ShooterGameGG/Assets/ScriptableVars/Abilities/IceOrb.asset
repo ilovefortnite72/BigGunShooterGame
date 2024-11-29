@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a11dc8e6c21c24488e9b6a941fa34d, type: 3}
-  m_Name: BlinkAbility
+  m_Script: {fileID: 11500000, guid: 7aa973d9aa424854c96a3630cde23dbd, type: 3}
+  m_Name: IceOrb
   m_EditorClassIdentifier: 
-  abilityName: Blink
-  abilitySprite: {fileID: 21300000, guid: 87464c5540b6ae842ab0fff2e1b9738e, type: 3}
-  cooldown: 12
-  range: 5
+  abilityName: IceOrb
+  abilitySprite: {fileID: 646002679, guid: 27506b5d65a20a644afacc36fed0fca9, type: 3}
+  cooldown: 15
+  range: 0
   damage: 0
   duration: 0
   radius: 0
@@ -28,3 +28,6 @@ MonoBehaviour:
   orbPrefab: {fileID: 0}
   AbilityUI: {fileID: 0}
   DamageType: 0
+  fireOrbPrefab: {fileID: 2129624061128505973, guid: 05ec8057cdaffee459dde74cad94d5b6, type: 3}
+  freezeOrbPrefab: {fileID: 2809123792650620967, guid: a77c34674e5cbd24abac39e9a906588b, type: 3}
+  orbType: 0

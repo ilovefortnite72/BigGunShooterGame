@@ -24,6 +24,14 @@ public class ChainLighting : SOAbilities
         Vector2 currentPosition = startPosition;
         List<Vector3> positions = new List<Vector3> { currentPosition };
 
+        GameObject effectInstance = null;
+        LineRenderer lineRenderer = null;
+        if(chainLightningEffect != null)
+        {
+            effectInstance = Instantiate(chainLightningEffect, startPosition, Quaternion.identity);
+            lineRenderer = effectInstance.GetComponent<LineRenderer>();
+        }
+
         for (int i = 0; i < remainingChains; i++)
         {
             // Find closest enemy
@@ -51,8 +59,8 @@ public class ChainLighting : SOAbilities
         // Instantiate chain lightning effect and set up LineRenderer
         if (chainLightningEffect != null && positions.Count > 1)
         {
-            GameObject effectInstance = Instantiate(chainLightningEffect, positions[0], Quaternion.identity);
-            LineRenderer lineRenderer = effectInstance.GetComponent<LineRenderer>();
+            effectInstance = Instantiate(chainLightningEffect, positions[0], Quaternion.identity);
+            lineRenderer = effectInstance.GetComponent<LineRenderer>();
             if (lineRenderer != null)
             {
                 lineRenderer.positionCount = positions.Count;

@@ -21,6 +21,10 @@ public class Rocket : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            return;
+        }
         Explode();
         ObjectPoolManager.SpawnObject(explosionVFX, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.GameObject);
     }

@@ -113,7 +113,8 @@ MonoBehaviour:
   isDead: 0
   eAnim: {fileID: 0}
   gm: {fileID: 0}
-  scoreValue: 10
+  Score: 10
+  isFrozen: 0
 --- !u!60 &1081435493437719179
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -220,7 +221,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 5287672165953045993}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0

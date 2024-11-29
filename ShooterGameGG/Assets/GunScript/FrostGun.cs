@@ -2,94 +2,120 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "FrostGun", menuName = "Guns/FrostGun")]
-public class FrostGun : SOGuns
+public class FrostGun: SOGuns
 {
-    public ParticleSystem frostGunEffect;
-    public Collider2D frostGunCollider;
-    public float SlowIncrement = 0.1f;
-    public float MaxSlow = 0.5f;
-    public float tickRate = 0.5f;
-    public float fuelConsumption = 5f;
-    
+    public float fuelConsumptionRate = 10f; 
+    public float damagePerTick = 5f;       
+    public float fuelRechargeRate = 5f;    
+    public float slowAmount = 0.3f;        
+    public float slowDuration = 2f;        
+    public float maxSlowEffect = 0.5f;     
+    public float tickRate = 0.5f;          
 
-    private float currentFuel;
-    private bool isFiring;
-    private bool isRecharing;
+    private ParticleSystem iceParticles;
+    private BoxCollider2D iceCollider;
+    private bool isRecharging = true;
+    private float tickTimer; 
 
     public override void Initialize()
     {
         base.Initialize();
-        currentFuel = maxAmmo;
-        canHoldTrigger = true;
-        usesFuel = true;
-        frostGunCollider = gunPrefab.GetComponent<Collider2D>();
+        isRecharging = true; 
+        tickTimer = 0f; 
     }
 
     public override void ActivateWeapon(Transform weaponOrigin, Vector2 target)
     {
-        if (isReloading || currentAmmo <= 0)
+        if (currentAmmo <= 0 || isReloading)
         {
-            StopFire(weaponOrigin);
+            StopFiring(weaponOrigin);
             return;
         }
 
-        isFiring = true;
-        frostGunCollider.enabled = true;
-        frostGunEffect.Play();
-        CoroutineHelper.Instance.StartCoroutine(ConsumeFuel());
+        
+        isRecharging = false;
+
+        if (iceParticles == null || iceCollider == null)
+        {
+            iceParticles = weaponOrigin.GetComponentInChildren<ParticleSystem>();
+            iceCollider = weaponOrigin.GetComponentInChildren<BoxCollider2D>();
+
+            if (iceParticles == null || iceCollider == null)
+            { 
+                return;
+            }
+        }
+
+        iceParticles.Play(); 
+        iceCollider.enabled = true; 
+
+
+        CoroutineHelper.Instance.StartCoroutine(ConsumeFuel(weaponOrigin));
     }
 
-    public override void HoldFire(Transform weaponOrigin, Vector2 target)
+    public override void StopFiring(Transform weaponOrigin)
     {
-        if (canHoldTrigger)
+
+        if (iceParticles != null)
+            iceParticles.Stop();
+        if (iceCollider != null)
+            iceCollider.enabled = false;
+
+
+        isRecharging = true;
+        CoroutineHelper.Instance.StartCoroutine(RechargeFuel());
+    }
+
+    private IEnumerator ConsumeFuel(Transform weaponOrigin)
+    {
+        while (currentAmmo > 0)
         {
-            ActivateWeapon(weaponOrigin, target);
+            currentAmmo -= Mathf.RoundToInt(fuelConsumptionRate * Time.deltaTime);
+            if (currentAmmo <= 0)
+            {
+                StopFiring(weaponOrigin);
+                yield break;
+            }
+
+            // Apply damage and slow at fixed intervals
+            tickTimer += Time.deltaTime;
+            if (tickTimer >= tickRate)
+            {
+                tickTimer = 0f; // Reset timer
+                ApplyEffects(iceCollider);
+            }
+
+            yield return null; // Wait for the next frame
         }
     }
 
-
-    public void StopFire(Transform weaponOrigin)
+    private void ApplyEffects(BoxCollider2D collider)
     {
-        if (isFiring)
+        Collider2D[] hits = Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0, whatIsEnemy);
+        foreach (var hit in hits)
         {
-            isFiring = false;
-            frostGunCollider.enabled = false;
-            frostGunEffect.Stop();
-            CoroutineHelper.Instance.StopAllCoroutines();
-
-            if (!isRecharing)
+            var enemy = hit.GetComponent<EnemyController>();
+            if (enemy != null)
             {
-                CoroutineHelper.Instance.StartCoroutine(RechargeFuel());
+                enemy.TakeDamage(damagePerTick);              // Apply damage
+                enemy.SlowEffect(slowAmount, maxSlowEffect);  // Apply slow effect
             }
         }
     }
-
-
-    private IEnumerator ConsumeFuel()
-    {
-        while (isFiring && currentFuel > 0)
-        {
-            currentFuel -= fuelConsumption * Time.deltaTime;
-
-            if (currentFuel <= 0)
-            {
-                StopFire(null);
-            }
-            yield return new WaitForSeconds(tickRate);
-
-        }
-    }
-
 
     private IEnumerator RechargeFuel()
     {
-        isRecharing = true;
-        while (!isFiring && currentFuel < maxAmmo)
+        while (isRecharging && currentAmmo < maxAmmo)
         {
-            currentFuel += fuelConsumption * Time.deltaTime;
-            currentFuel = Mathf.Clamp(currentFuel, 0, maxAmmo);
-            yield return new WaitForSeconds(tickRate);
+            currentAmmo += Mathf.RoundToInt(fuelRechargeRate * Time.deltaTime);
+
+            if (currentAmmo >= maxAmmo)
+            {
+                currentAmmo = maxAmmo; // Clamp to max ammo
+                isRecharging = false;  // Stop recharging if full
+            }
+
+            yield return null; // Wait for the next frame
         }
-        isRecharing = false;
     }
 }

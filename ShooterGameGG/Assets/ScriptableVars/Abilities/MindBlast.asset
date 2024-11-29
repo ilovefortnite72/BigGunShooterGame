@@ -9,22 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a11dc8e6c21c24488e9b6a941fa34d, type: 3}
-  m_Name: BlinkAbility
+  m_Script: {fileID: 11500000, guid: bc59c6ac25016d04785e278df6e92402, type: 3}
+  m_Name: MindBlast
   m_EditorClassIdentifier: 
-  abilityName: Blink
-  abilitySprite: {fileID: 21300000, guid: 87464c5540b6ae842ab0fff2e1b9738e, type: 3}
-  cooldown: 12
-  range: 5
+  abilityName: MindBlast
+  abilitySprite: {fileID: 0}
+  cooldown: 15
+  range: 0
   damage: 0
   duration: 0
-  radius: 0
+  radius: 0.45
   speed: 0
   knockback: 0
   damageOverTime: 0
   slowAmount: 0
   stunDuration: 0
-  player: {fileID: 0}
-  orbPrefab: {fileID: 0}
   AbilityUI: {fileID: 0}
-  DamageType: 0
+  effectAngle: 45
